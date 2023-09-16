@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>音量</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="status">预备开始</div>
+
+
+<script type="text/javascript">
+    const myStatus = document.getElementById("status");
+    debugger
+    // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+    if (!navigator.getUserMedia) {
+        myStatus.innerHTML = "您的浏览器不支持获取音频。"
+    }
+    navigator.getUserMedia({audio: true}, onSuccess, onError); //调用麦克风捕捉音频信息，成功时触发onSuccess函数，失败时触发onError函数
+    function onError() {
+        myStatus.innerHTML = "获取音频时好像出了点问题。"
+    }
+
+    function onSuccess(stream) {
+
+
+        //创建一个音频环境对像
+        const audioContext = window.AudioContext || window.webkitAudioContext;
+        const context = new audioContext();
+
+        //将声音输入这个对像
+        const audioInput = context.createMediaStreamSource(stream);
+
+        //设置音量节点
+        const volume = context.createGain();
+        audioInput.connect(volume);
+
+        //创建缓存，用来缓存声音
+        const bufferSize = 2048;
+
+        // 创建声音的缓存节点，createJavaScriptNode方法的
+        // 第二个和第三个参数指的是输入和输出都是双声道。
+        const recorder = context.createScriptProcessor(bufferSize, 1, 1);
+
+        // 录音过程的回调函数，基本上是将左右两声道的声音
+        // 分别放入缓存。
+        recorder.onaudioprocess = function (e) {
+            const  buffer = e.inputBuffer.getChannelData(0); //获得缓冲区的输入音频，转换为包含了PCM通道数据的32位浮点数组
+            //创建变量并迭代来获取最大的音量值
+            let maxVal = 0;
+            for (let i = 0; i < buffer.length; i++) {
+                if (maxVal < buffer[i]) {
+                    maxVal = buffer[i];
+                }
+            }
+            //显示音量值
+            myStatus.innerHTML = "您的音量值：" + Math.round(maxVal * 100);
+            if (maxVal > .5) {
+                //当音量值大于0.5时，显示“声音太响”字样，并断开音频连接
+                myStatus.innerHTML = "您的声音太响了!!";
+                // liveSource.disconnect(levelChecker);
+            }
+        }
+
+        // 将音量节点连上缓存节点，换言之，音量节点是输入
+        // 和输出的中间环节。
+        volume.connect(recorder);
+
+        // 将缓存节点连上输出的目的地，可以是扩音器，也可以
+        // 是音频文件。
+        recorder.connect(context.destination);
+
+
+    }
+</script>
+</body>
+</html>

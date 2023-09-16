@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    $(function () {
+      function isIE() {
+        return navigator.userAgent.toLowerCase().indexOf('trident') > -1 ? true : false;
+      };
+      $(".tp-content-tips").hide();
+      if (isIE()) {
+        $(".tp-content")
+          .removeClass("hide")
+          .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
+          .animate({ "opacity": "1", "left": "0" }, 1000, function () {
+            $(".tp-content").css({ "position": "static" });
+          });
+      }else{
+        $(".tp-content-noie")
+          .removeClass("hide")
+          .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
+          .animate({ "opacity": "1", "left": "0" }, 1000, function () {
+            $(".tp-content-noie").css({ "position": "static" });
+          });
+      }
+      $(".tp-writebtn").click(function () {
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+        var newFileObject = fso.OpenTextFile("D:/test2.txt", true);
+        $("tp-contentpre").html(newFileObject.ReadAll());
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <br>
+  <div class="tp-content-tips">
+    <div class="container">
+      <div class="alert alert-info">请允许使用ActiveX插件</div>
+    </div>
+  </div>
+  <div class="tp-content hide">
+    <div class="container">
+      <p><button class="tp-writebtn btn btn-default">读取</button></p>
+      <p>
+      <pre class="tp-contentpre"></pre>
+      </p>
+    </div>
+  </div>
+  <div class="tp-content-noie hide">
+    <div class="container">
+      <div class="alert alert-danger">请使用IE浏览器打开</div>
+    </div>
+  </div>
+</body>
+
+</html>

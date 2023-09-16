@@ -1,0 +1,21 @@
+<p>
+    选择一段文字，点击按钮按钮
+</p>
+<button id="button">点我啊</button>
+<script>
+    var oBtn = document.getElementById("button");
+    oBtn.onclick = function () {
+        var userSelection, text;
+        if (window.getSelection) {
+            //现代浏览器
+            userSelection = window.getSelection();
+        } else if (document.selection) {
+            //IE浏览器 考虑到Opera，应该放在后面
+            userSelection = document.selection.createRange();
+        }
+        if (!(text = userSelection.text)) {
+            text = userSelection;
+        }
+        alert(text);
+    };
+</script>

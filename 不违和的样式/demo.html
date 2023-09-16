@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    <link rel="stylesheet" href="css/Windows11.css">-->
+    <title>样例</title>
+    <style>
+        @media (prefers-color-scheme: light) {
+
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            :root {
+                --main-backgroundColor: rgb(32, 32, 32);
+            }
+
+            * {
+                transition: 0.2s;
+            }
+
+
+            ::-webkit-scrollbar {
+                background: none;
+                width: 8px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background-color: rgb(159, 159, 159);
+                border-radius: 4px;
+            }
+
+            body {
+                background: rgb(32, 32, 32);
+                color: #fff;
+            }
+
+            body::-webkit-scrollbar:hover {
+                background: rgb(45, 45, 45);
+                width: 12px;
+            }
+
+            body::-webkit-scrollbar-thumb {
+                border: 3px solid rgb(32, 32, 32);
+            }
+
+            body::-webkit-scrollbar-thumb:hover {
+                border: 3px solid rgb(45, 45, 45);
+                border-radius: 6px;
+            }
+
+            .button {
+                text-align: center;
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 4px;
+                border: 1px solid rgb(53, 53, 53);
+                background-color: rgb(50, 50, 50);
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .button:hover {
+                background-color: rgb(60, 60, 60);
+            }
+
+            .button:active {
+                background-color: rgb(45, 51, 63);
+            }
+
+            .button.iconButton {
+                background: none;
+                border: none;
+            }
+
+            .button.iconButton:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .button.iconButton:active {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+
+            .link {
+                color: rgb(153, 235, 255);
+                text-decoration: none;
+                background-color: transparent;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+
+            .link:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .link:active {
+                color: rgb(76, 194, 255);
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+
+            .link.noPadding {
+                padding: 0;
+            }
+
+            .input {
+                background-color: rgb(45, 45, 45);
+                border-radius: 4px;
+                border: 1px solid rgb(48, 48, 48);
+                border-bottom: 1px solid rgb(154, 154, 154);
+                padding: 6px 10px 4px;
+                caret-color: rgb(255, 255, 255);
+                color: #FFF;
+                height: 29px;
+                outline: none;
+                box-sizing: border-box;
+
+            }
+
+            .input.block {
+                display: block;
+                width: 100%;
+            }
+
+            .input::placeholder {
+                color: rgb(207, 207, 207);
+            }
+
+            .input:focus {
+                background-color: rgb(29, 31, 35);
+                border-bottom: 2px solid rgb(76, 194, 255);
+                padding: 6px 10px 3px;
+            }
+
+            .input:focus::placeholder {
+                color: rgb(149, 150, 151);
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-weight: lighter;
+            }
+
+            hr {
+                border: none;
+                border-bottom: 1px solid rgb(50, 50, 50);
+                margin-top: 20px;
+            }
+
+            .rounded {
+                border-radius: 4px;
+            }
+
+            .bordered {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .select {
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 4px;
+                border: 1px solid rgb(53, 53, 53);
+                background-color: rgb(50, 50, 50);
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .select.listBox {
+                padding: 0;
+                outline: none;
+            }
+
+            .select::-webkit-scrollbar-thumb {
+                border: 3px solid rgb(50, 50, 50);
+            }
+
+            .select:not(.listBox):hover {
+                background-color: rgb(60, 60, 60);
+            }
+
+            .select:not(.listBox):active {
+                background-color: rgb(45, 51, 63);
+            }
+
+            .select > option {
+                padding: 2px 10px;
+                border-radius: 4px;
+                margin: 4px;
+                box-sizing: border-box;
+                border-top: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                border-left: 3px solid transparent;
+            }
+
+            .select > option:checked {
+                background-color: rgb(59, 59, 59);
+                color: #FFF;
+                padding: 2px 10px;
+                border-top: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                border-left: 3px solid rgb(76, 194, 255);
+            }
+
+            .select > option:active {
+                opacity: 0.5;
+                padding: 2px 10px;
+                border-top: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                border-left: 3px solid transparent;
+            }
+
+            .select > option:hover {
+                background-color: rgb(56, 56, 56);
+            }
+
+            .select.block {
+                display: block;
+                width: 100%;
+            }
+
+            .radio {
+                appearance: none;
+            }
+
+            .radio:checked:before {
+                background-color: rgb(0, 0, 0);
+            }
+
+            .radio:checked:after
+
+        }
+
+        @keyframes flick {
+            0% {
+                height: 0;
+            }
+            50% {
+                height: 1px;
+            }
+            100% {
+                height: 0;
+            }
+        }
+
+        .sizerTemp {
+            animation: flick;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+        }
+    </style>
+</head>
+<body>
+
+<p>Hello world!</p>
+
+<hr>
+
+<h2>按钮</h2>
+
+<p>
+    <button class="button">这是按钮</button>
+</p>
+
+<div class="button">这是块级按钮</div>
+
+<p>
+    这是一个图标按钮，适用于仅显示一个图标的按钮（当然显示简单的文本也是可以的）：
+    <button class="button iconButton">↻</button>
+</p>
+
+<hr>
+
+<h2>输入框</h2>
+
+<p>
+    <label>
+        标签
+        <input placeholder="输入框" class="input">
+    </label>
+    <button class="button">提交</button>
+</p>
+
+<label>
+    <input placeholder="这是个块级输入框" class="input block">
+</label>
+
+<hr>
+
+<h2>超链接</h2>
+
+<p>
+    <a href="https://example.com" class="link">超链接</a>
+    <a href="https://example.com" class="button">按钮超链接</a>
+</p>
+
+<p>
+    这是一个<a href="https://example.com" class="link noPadding">无边距的超链接</a>，能够和文本融为一体。类似于下面的图片：
+</p>
+<p>
+    <img src="static/无边距的超链接.png" height="41" width="75" alt="无边距的超链接.png" class="rounded bordered"/>
+</p>
+
+<hr>
+
+<h2>下拉框和列表框</h2>
+
+<blockquote class="warn">列表框样式仅支持Chrome浏览器！（Edge虽然是Chrome内核，但也不支持此样式）</blockquote>
+
+<p>
+    <label>
+        下拉框
+        <select class="select">
+            <option>这是一个示例选项</option>
+            <option>这是一个示例选项</option>
+            <option disabled>这是一个示例禁用选项</option>
+            <option>这是一个示例选项</option>
+            <optgroup label="这是一个示例选项组">
+                <option style="color: blue; line-height: 30px">这是选项组里的选项</option>
+                <option disabled>这是选项组里的禁用选项</option>
+                <option>这是选项组里的选项</option>
+            </optgroup>
+        </select>
+    </label>
+</p>
+
+<p>
+    <label>
+        列表框
+        <select class="select listBox" size="4">
+            <option>这是一个示例选项</option>
+            <option>这是一个示例选项</option>
+            <option disabled>这是一个示例禁用选项</option>
+            <option>这是一个示例选项</option>
+        </select>
+    </label>
+</p>
+
+<p>
+    <label>
+        列表框
+        <select class="select listBox" multiple size="4">
+            <option>这是一个示例选项</option>
+            <option>这是一个示例选项</option>
+            <option disabled>这是一个示例禁用选项</option>
+            <option>这是一个示例选项</option>
+        </select>
+        (多选)
+    </label>
+</p>
+
+<p>
+    <label>
+        <select class="select block">
+            <option>这是一个块级下拉框</option>
+            <option>这是一个块级下拉框</option>
+            <option disabled>这是一个示例禁用选项</option>
+            <option>这是一个块级下拉框</option>
+            <optgroup label="这是一个示例选项组">
+                <option style="color: blue; line-height: 30px">这是选项组里的选项</option>
+                <option disabled>这是选项组里的禁用选项</option>
+                <option>这是选项组里的选项</option>
+            </optgroup>
+        </select>
+    </label>
+</p>
+
+<p>
+    <label>
+        <select class="select listBox block" size="4">
+            <option>这是一个块级列表框</option>
+            <option>这是一个块级列表框</option>
+            <option disabled>这是一个示例禁用选项</option>
+            <option>这是一个块级列表框</option>
+        </select>
+    </label>
+</p>
+
+
+<p>
+    <label>
+        <select class="select listBox block" multiple size="4">
+            <option>这是一个块级多选列表框</option>
+            <option>这是一个块级多选列表框</option>
+            <option disabled>这是一个示例禁用选项</option>
+            <option>这是一个块级多选列表框</option>
+        </select>
+    </label>
+</p>
+
+<hr>
+
+<h2>表单选项（单选框、复选框、开关等）</h2>
+
+<p>
+    <label>
+        <input type="radio" class="radio" name="radio1" checked>
+        这是一个单选框
+    </label>
+</p>
+<p>
+    <label>
+        <input type="radio" class="radio" name="radio1">
+        这是一个单选框
+    </label>
+</p>
+
+<div class="sizerTemp"></div>
+
+</body>
+</html>

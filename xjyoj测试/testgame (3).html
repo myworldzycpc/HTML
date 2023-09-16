@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script>
+            var n = 0;
+            const maxadder = 3;
+            function flushn(){
+                document.getElementById('n').innerHTML = n;
+            }
+            function adder(id, amount, addn, cost, addcost){
+                var d = {};
+                d.id = id;
+                d.amount = amount;
+                d.addn = addn;
+                d.cost = cost;
+                d.addcost = addcost;
+                d.buyadder = function(buyamount){
+                    if(n >= (d.cost * buyamount + d.addcost * buyamount * (buyamount - 1) / 2)){
+                        n -= (d.cost * buyamount + d.addcost * buyamount * (buyamount - 1) / 2);
+                        d.amount += buyamount;
+                        d.cost += buyamount * d.addcost;
+                    }
+                    d.flushcost();
+                };
+                d.add = function(){
+                    n += d.amount * d.addn;
+                };
+                d.flushcost = function(){
+                    document.getElementById('cost'+id).innerHTML = d.cost;
+                }
+                return d;
+            }
+            var adders = [
+                adder(0, 0, 0, 0, 0),
+                adder(1, 0, 1, 5, 5),
+                adder(2, 0, 5, 50, 10),
+                adder(3, 0, 25, 500, 50)
+            ];
+        </script>
+    </head>
+    <body>
+        <script>
+            setInterval(flushn, 50);
+            for(i = 1; i <= maxadder; i++){
+                setInterval(adders[i].add, 1000);
+            }
+        </script>
+        <h1><span id="n">0</span></h1>
+        <button style="width:200px;height:50px" onclick="n += 1;">add n by 1</button><br>
+        <button style="width:200px;height:50px" onclick="adders[1].buyadder(1)">buy adder1(cost: <span id="cost1">5</span>)</button>
+        (add n by 1 every adder every serond)<br>
+        <button style="width:200px;height:50px" onclick="adders[2].buyadder(1)">buy adder2(cost: <span id="cost2">50</span>)</button>
+        (add n by 5 every adder every serond)<br>
+        <button style="width:200px;height:50px" onclick="adders[3].buyadder(1)">buy adder3(cost: <span id="cost3">500</span>)</button>
+        (add n by 25 every adder every serond)<br>
+    </body>
+</html>

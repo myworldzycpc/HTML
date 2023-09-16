@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Helen Keller</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            var s = [
+                ['', 9.020013809204102],
+                ['2013的某一天 他认识了PHP', 15.597968816757202],
+                ['可他从不敢相信 那是噩梦的开启', 23.22523260116577],
+                ['2015的某一天 加班到无法休息', 31.061633348464966],
+                ['忙里偷闲打开微信 却没人发消息', 38.428058385849],
+                ['2017的某一天 面试之前认真复习', 46.442861795425415],
+                ['上上知乎问问建议 当初就不该学PHP', 56.74790072441101],
+                ['他们说用Python的看不起用Java的 啊', 61.45870399475098],
+                ['Java的也只能骂PHP啦', 65.20049405097961],
+                ['就算你们都是用Python的鸭 ', 68.81969475746155],
+                ['Python3和Python2也势不两立啊', 72.31263327598572],
+                ['用AS的看不起用Eclipse的啊', 76.11774802207947],
+                ['可苹果也看不起做Android的', 79.93733215332031],
+                ['Vim和Emacs吵个不停啦', 83.5217502117157],
+                ['还天天骂Sublime的智障吗', 87.24512982368469],
+                ['用React的看不起用Angular的', 91.06057906150818],
+                ['Git用户天天骂SVN傻瓜', 94.94248509407043],
+                ['Docker用户说Puppet是上个世纪的吗?', 98.64618396759033],
+                ['用图形界面不用命令，智商不够用吗?', 102.29181861877441],
+                ['用Debian的瞧不起用Ubuntu的', 105.98155498504639],
+                ['用MBP的说用win没钱吗？', 109.60958552360535],
+                ['BAT的说小公司也算公司吗？', 113.52071070671082],
+                ['独角兽说我分十亿你分得起吗？', 117.09220886230469],
+                ['黑轴茶轴天天纠缠不休啊', 120.95148801803589],
+                ['难怪双飞燕的妹子插不上话', 124.71110582351685],
+                ['坐Aeron的看不起坐办公椅的', 128.40010857582092],
+                ['站着打代码的说你俩会长胖的', 132.22643041610718],
+                ['985的看不起211的啊', 135.9974377155304],
+                ['他们还天天骂北大青鸟呢', 139.72794771194458],
+                ['考计算机二级是有病吗', 143.17124843597412],
+                ['Gayhub没有一千星星别来丢人啦', 147.27563548088074],
+                ['啊 ~ 别再骂啦~~', 153.27245426177979],
+                ['女朋友呢~ 找到了吗？', 161.79518628120422]
+            ];
+            function rec(r, A) {
+                x = r * Math.cos(A * Math.PI / 180);
+                y = r * Math.sin(A * Math.PI / 180);
+                return [x, y];
+            }
+            function roll(d) {
+                return rec(0.5, 180 * d)[0] + 0.5;
+            }
+            function anifunc(f, t, cf = function () { }) {
+                var c = 0;
+                for (var i = 0; i < t; i++) {
+                    setTimeout(function () {
+                        c++;
+                        f(c / t);
+                        if (c == t) {
+                            cf();
+                        }
+                    }, i);
+                }
+            }
+            var playing = false;
+            $("body").click(function () {
+                if (!playing) {
+                    playing = true;
+                    $('#sound').trigger('play');
+                    $("#div2").hide();
+                    index = 0;
+                    for (var i = 1; i < s.length; i++) {
+                        setTimeout(function () {
+                            index++;
+                            // console.log(index, s[index - 1][1]);
+                            $("#d3").html(s[index][0]);
+                            anifunc(function (a) {
+                                $("#div2").css("filter", `blur(${roll(a) * 5}px)`);
+                                $("#div2").css("opacity", roll(1 - a) * 1);
+                                $("#div2").css("letter-spacing", `${roll(a) * 5}rem`);
+                                $("#div2").css("font-size", `${200 - roll(a) * 100}%`);
+                                $("#d3").css("transform", `rotate(${roll(a) * 45}deg)`);
+                            }, 800, function () {
+                                // console.log('e');
+                                setTimeout(function () {
+                                    anifunc(function (a2) {
+                                        $("#div2").css("filter", `blur(${roll(1 - a2) * 5}px)`);
+                                        $("#div2").css("opacity", roll(a2) * 1);
+                                        $("#div2").css("letter-spacing", `${roll(1 - a2) * 5}rem`);
+                                        $("#div2").css("font-size", `${200 + roll(1 - a2) * 100}%`);
+                                        $("#d3").css("transform", `rotate(${0 - roll(1-a2) * 45}deg)`);
+                                    }, 1800)
+                                }, (s[index][1] - s[index - 1][1]) * 1000 - 3200);
+                            })
+                            $("#div2").show();
+                            if (index == s.length) {
+                                playing = false;
+                            }
+                        }, s[i - 1][1] * 1000 - 2000)
+                    }
+                }
+            })
+
+        });
+    </script>
+    <style>
+        #div1 {
+            display: table;
+            text-align: center;
+            background-color: darkslategray;
+            width:100%;
+            height: 100%;
+            position: fixed;
+        }
+
+        #div2 {
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+            color: white;
+            font-size: 200%;
+            white-space: nowrap;
+        }
+        
+      
+    </style>
+</head>
+
+<body>
+    <div class="tp-content">
+        <div id="div1">
+            <div id="div2">
+                <div id="d3">单击屏幕</div>
+            </div>
+        </div>
+    </div>
+    <video class="hide" id="sound" src="当初就不该学php.mp3" preload="auto"></video>
+
+</body>
+
+</html>

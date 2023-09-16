@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>随机抽取同学姓名</title>
+    <script src="jquery.min.js"></script>
+    <style>
+        /* 样式代码省略，保持不变 */
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>随机抽取同学姓名</h2>
+    <button id="startButton" class="button">开始</button>
+    <div class="result"></div>
+    <div class="advanced-options">
+        <div class="options-toggle">高级选项</div>
+        <div class="options-content">
+            <label><input type="checkbox" id="quickModeCheckbox"> 快抽模式</label>
+            <label>抽取人数：
+                <select id="numOfStudentsSelect">
+                    <!-- 选项代码省略，保持不变 -->
+                </select>
+            </label>
+            <label>排除请假学生：
+                <select id="excludeStudentsSelect" multiple>
+                    <!-- 选项代码省略，保持不变 -->
+                </select>
+            </label>
+            <label>切换界面风格：
+                <select id="styleSelect">
+                    <!-- 选项代码省略，保持不变 -->
+                </select>
+            </label>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // 同学姓名数组
+        var students = ['学生1', '学生2', '学生3', '学生4', '学生5'];
+
+        // 获取元素
+        var startButton = $('#startButton');
+        var resultDiv = $('.result');
+        var optionsToggle = $('.options-toggle');
+        var optionsContent = $('.options-content');
+        var quickModeCheckbox = $('#quickModeCheckbox');
+        var numOfStudentsSelect = $('#numOfStudentsSelect');
+        var excludeStudentsSelect = $('#excludeStudentsSelect');
+        var styleSelect = $('#styleSelect');
+
+        // 切换界面风格
+        styleSelect.on('change', function () {
+            var selectedStyle = styleSelect.val();
+            $('body').attr('class', selectedStyle);
+        });
+
+        // 高级选项折叠效果
+        optionsToggle.on('click', function () {
+            optionsContent.slideToggle();
+        });
+
+        // 随机抽取姓名
+        function pickRandomStudent() {
+            var numOfStudents = parseInt(numOfStudentsSelect.val());
+            var excludedStudents = excludeStudentsSelect.val();
+
+            var availableStudents = students.filter(function (student) {
+                return !excludedStudents.includes(student);
+            });
+
+            var pickedStudents = [];
+            for (var i = 0; i < numOfStudents; i++) {
+                var randomIndex = Math.floor(Math.random() * availableStudents.length);
+                var pickedStudent = availableStudents.splice(randomIndex, 1)[0];
+                pickedStudents.push(pickedStudent);
+            }
+
+            return pickedStudents;
+        }
+
+        // 显示抽取结果
+        function showResult() {
+            var pickedStudents = pickRandomStudent();
+            resultDiv.text('抽取到的同学：' + pickedStudents.join(', '));
+            resultDiv.show();
+        }
+
+        // 清除抽取结果
+        function clearResult() {
+            resultDiv.text('');
+            resultDiv.hide();
+        }
+
+        // 停止抽取
+        function stopPicking() {
+            clearInterval(interval);
+            startButton.text('开始');
+            startButton.prop('disabled', false);
+        }
+
+        // 开始或停止抽取
+        function togglePicking() {
+            if (interval) {
+                stopPicking();
+                showResult();
+            } else {
+                startButton.text('停止');
+                startButton.prop('disabled', true);
+                clearResult();
+                interval = setInterval(showResult, 200);
+            }
+        }
+
+        // 处理快抽模式
+        var interval;
+        if (quickModeCheckbox.prop('checked')) {
+            startButton.on('mousedown', togglePicking);
+            startButton.on('mouseup', stopPicking);
+        } else {
+            startButton.on('click', togglePicking);
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+        });
+    </script>
+    <title></title>
+</head>
+
+<body>
+
+<div class="container">
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-6" style="line-height: 35px; font-size: 20px"><b>McTools</b> - 微信消息捕捉防撤回工具</div>
+                <div class="col-xs-6" style="text-align: right">
+                    <button class="btn btn-default">返回首页</button>
+                    <button class="btn btn-danger">关闭</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body"
+             style="background-image: url('img8.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox">
+                    捕捉微信消息
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox">
+                    捕捉微信语音
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox">
+                    捕捉微信图片
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox">
+                    捕捉微信文件
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox">
+                    记录自己撤回的消息
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox">
+                    微信中可以点击撤回的消息查看记录
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    消息撤回后，捕捉到的消息记录自动销毁时间：
+                </label>
+                <select class="form-control">
+                    <option>不限（不安全，可能导致信息泄露）</option>
+                    <option></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>
+                    黑名单会话（下面列出的会话消息不会捕捉，如果要输入多个会话，请分行输入）：
+                </label>
+                <textarea class="form-control"></textarea>
+            </div>
+
+            <p><a class="btn btn-block btn-primary">导出消息记录（为了避免信息泄露，请记得在生命周期结束后销毁）</a></p>
+            <p style="color: red">
+                注意：<br>
+                当微信未登录时，消息无法被捕捉到。<br>
+                当手机电脑同时登录时，可能需要微信窗口位于任务栏时才能捕捉到消息。<br>
+                由于网速问题，若消息在接收到之前被撤回，也有可能导致消息无法被记录。<br>
+            </p>
+            <p>
+                <a class="btn btn-block btn-danger">清空所有消息记录</a>
+                <a class="btn btn-block btn-danger">清空所有已撤回消息记录</a>
+            </p>
+            <hr>
+            <small>©2022 McTools</small>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

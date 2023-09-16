@@ -1,0 +1,16 @@
+.inited, input{
+    background-color:black;
+    color:white;
+    font-family:courier;
+    padding:5px;
+    font-size:24px;
+    word-break:break-all;
+}
+
+input{
+    outline:none;
+    color:white;
+    --webkit-appearance:none;
+    border:none;
+    background-color:transparent;
+}

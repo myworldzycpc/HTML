@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/Win11概念/index.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/XJYHydro/尾部附加.js" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/XJYHydro/比赛预告.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/XJYHydro/颜色反转.js" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/xjyoj测试/弹窗按钮.html" libraries="{bootstrap, jquery}" />
+    <file url="file://$PROJECT_DIR$/动画/div打开.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/寒假倒计时/元旦倒计时.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/数据生成器/数据生成器.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/本地应用安装/test.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/走迷宫/走迷宫.html" libraries="{bootstrap, jquery}" />
+    <file url="file://$PROJECT_DIR$/走迷宫/避免网络错误.html" libraries="{bootstrap, jquery}" />
+    <file url="file://$PROJECT_DIR$/随机抽取/随机抽取.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/音游/关卡制作器.html" libraries="{jquery}" />
+    <file url="file://$PROJECT_DIR$/音游/开始游戏.html" libraries="{jquery}" />
+  </component>
+</project>

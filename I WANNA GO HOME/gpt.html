@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I WANNA GO HOME - A Text Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        #game-container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            background-color: #fff;
+            max-width: 600px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #output {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="game-container">
+    <h1>I WANNA GO HOME</h1>
+    <p>You are lost in a mysterious world. Your goal is to find your way back home.</p>
+    <button onclick="startGame()">Start</button>
+    <div id="output"></div>
+</div>
+
+<script>
+    const outputElement = document.getElementById('output');
+    let playerHasKey = false;
+
+    function startGame() {
+        outputElement.innerHTML = `
+    <p>You wake up in an unfamiliar forest. There is a path to the left and a path to the right.</p>
+    <button onclick="takeLeftPath()">Take the left path</button>
+    <button onclick="takeRightPath()">Take the right path</button>
+  `;
+    }
+
+    function takeLeftPath() {
+        outputElement.innerHTML = `
+    <p>You encounter a locked door. A key is hidden under a rock nearby.</p>
+    <button onclick="takeKey()">Take the key</button>
+    <button onclick="goBack()">Go back</button>
+  `;
+    }
+
+    function takeKey() {
+        playerHasKey = true;
+        outputElement.innerHTML = `
+    <p>You have taken the key.</p>
+    <button onclick="goBack()">Go back</button>
+  `;
+    }
+
+    function takeRightPath() {
+        if (playerHasKey) {
+            outputElement.innerHTML = `
+      <p>You find a door that can be unlocked with the key you found. You open the door and see your home in the distance.</p>
+      <p>Congratulations! You have successfully made it back home.</p>
+      <button onclick="restartGame()">Play Again</button>
+    `;
+        } else {
+            outputElement.innerHTML = `
+      <p>You come across a locked door. It seems you need a key to unlock it.</p>
+      <button onclick="goBack()">Go back</button>
+    `;
+        }
+    }
+
+    function goBack() {
+        outputElement.innerHTML = `
+    <p>You go back to where you started.</p>
+    <button onclick="startGame()">Start Over</button>
+  `;
+    }
+
+    function restartGame() {
+        playerHasKey = false;
+        outputElement.innerHTML = '';
+        startGame();
+    }
+</script>
+</body>
+</html>

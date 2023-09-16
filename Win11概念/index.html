@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="static/win11logo.png">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <title>Windows 11 概念页</title>
+    <style>
+        .background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background-image: url("static/desktop.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 60px;
+            width: 100%;
+            backdrop-filter: saturate(180%) blur(20px);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .taskbar .middle {
+            text-align: center;
+            height: 60px;
+        }
+
+        .taskbar-icon {
+            height: 48px;
+            width: 48px;
+            border-radius: 8px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.1s;
+            background-color: rgba(255, 255, 255, 0);
+            box-shadow: 1px 1px 0 #00000000;
+        }
+
+        .taskbar-icon * {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.1s;
+        }
+
+        .taskbar-icon:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 1px 1px 0 #00000010;
+        }
+
+        .taskbar-icon:active {
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 1px 1px 0 #00000010;
+        }
+
+        .taskbar-icon:active * {
+            filter: brightness(0.8);
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        .window {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 20px 20px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            overflow: hidden;
+            transition: 0.2s;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background-color: #E0E0E0FF;
+        }
+
+        .window.toShow {
+            transform: translate(-50%, 50%);
+            opacity: 0;
+        }
+
+        .window-heading {
+            height: 52px;
+            user-select: none;
+            transition: 0.2s;
+        }
+
+        .window-title {
+            padding: 18px;
+            float: left;
+        }
+
+        .window:focus, .window:has(*:focus) {
+            backdrop-filter: saturate(180%) blur(20px);
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 30px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .window-nav {
+            background-color: rgb(242, 244, 249);
+            padding: 13px 18px;
+        }
+
+        .window-nav .btn {
+            margin-right: 35px;
+        }
+
+        .window-body {
+            background-color: #FFFFFFFF;
+            padding: 18px;
+            outline: none;
+        }
+
+        .window-btn-close::before {
+            content: "×";
+        }
+
+        .window-btn-close:hover {
+            background-color: red;
+            color: antiquewhite;
+        }
+
+        .window-btn-close:active {
+            background-color: red;
+            color: white;
+            opacity: 0.7;
+        }
+
+        .window-btn-close {
+            float: right;
+            font-size: 31px;
+            line-height: 52px;
+            padding: 0 20px;
+            transition: 0.2s;
+        }
+
+        .desktop {
+            position: fixed;
+            display: grid;
+            top: 0;
+            left: 0;
+        }
+
+        .desktop-icon {
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            max-height: 128px;
+            width: 90px;
+            user-select: none;
+        }
+
+        .desktop-icon:hover {
+            background-color: #FFFFFF30;
+        }
+
+        .desktop-icon:focus {
+            background-color: #FFFFFF50;
+        }
+
+        .desktop-icon-pic img {
+            max-height: 64px;
+        }
+
+        .desktop-icon-name {
+            color: white;
+            text-shadow: 0 0 4px black, 0 1px 4px black, 1px 0 4px black;
+        }
+    </style>
+    <script>
+        $(function () {
+            window.movingWindow = null;
+            window.lastPos = [0, 0];
+
+            function showWindow($element) {
+                $element.addClass("toShow");
+                setTimeout(function () {
+                    $element.removeClass("toShow");
+                    $element.show();
+                    $element.focus();
+                });
+            }
+
+            function hideWindow($element) {
+                $element.removeClass("toShow");
+                setTimeout(function () {
+                    $element.addClass("toShow");
+                    setTimeout(function () {
+                        $element.show();
+                    }, 200);
+                });
+            }
+
+            function moveWindow($element, deltaX, deltaY) {
+                console.log(deltaX, deltaY);
+                movingWindow.css({
+                    "transition": "0",
+                    "left": `${deltaX > 0 ? "+" : "-"}=${Math.abs(deltaX)}px`,
+                    "top": `${deltaY > 0 ? "+" : "-"}=${Math.abs(deltaY)}px`,
+                });
+            }
+
+            $(".window-btn-close").click(function () {
+                hideWindow($(this).parent().parent());
+            });
+
+            $(".desktop-icon").dblclick(function () {
+                const dataOpen = $(this).attr("data-open");
+                showWindow($(`[data-name=${dataOpen}]`));
+            });
+
+            $(".window-heading").mousedown(function (e) {
+                window.movingWindow = $(this).parent();
+                window.lastPos = [e.offsetX, e.offsetY];
+            });
+
+            $("body").mousemove(function (e) {
+                if (movingWindow) {
+                    const deltaX = e.offsetX - lastPos[0];
+                    const deltaY = e.offsetY - lastPos[1];
+                    moveWindow(movingWindow, deltaX, deltaY);
+                    window.lastPos = [e.offsetX, e.offsetY];
+                }
+            }).mouseup(function () {
+                movingWindow.css({
+                    "transition": "0.2s"
+                });
+                window.movingWindow = null;
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="background"></div>
+<div class="desktop">
+    <div class="desktop-icon" tabindex="-1" data-open="notepad">
+        <div class="desktop-icon-pic">
+            <img src="static/text_file.png" alt="">
+        </div>
+        <div class="desktop-icon-name">
+            新建文本文档.txt
+        </div>
+    </div>
+</div>
+<div class="window" tabindex="-1" data-name="notepad">
+    <div class="window-heading">
+        <div class="window-title">记事本</div>
+        <div class="window-btn-close"></div>
+    </div>
+    <div class="window-nav">
+        <a class="btn">文件</a>
+        <a class="btn">编辑</a>
+        <a class="btn">查看</a>
+    </div>
+    <div class="window-body" contenteditable="true">
+        test
+    </div>
+</div>
+<div class="taskbar">
+    <div class="middle">
+        <div class="taskbar-icon">
+            <img src="static/win11logo.png" alt="Windows">
+        </div>
+    </div>
+</div>
+</body>
+</html>

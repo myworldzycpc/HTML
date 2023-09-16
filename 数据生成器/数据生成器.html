@@ -1,0 +1,509 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>数据生成器</title>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        [data-to] {
+            cursor: pointer;
+        }
+
+        label {
+            width: 100%;
+        }
+
+        [data-result-for] {
+            resize: vertical;
+        }
+    </style>
+    <script>
+
+        $.fn.valNum = function () {
+            let rtn;
+            if (arguments.length === 0) {
+                const inputElement = this[0];
+                const inputValue = $.fn.val.apply(this);
+                if (inputValue.trim() === "") {
+                    rtn = parseFloat(inputElement.placeholder);
+                } else {
+                    rtn = parseFloat(inputValue);
+                }
+            } else {
+                rtn = parseFloat($.fn.val.apply(this, arguments));
+            }
+            if (isNaN(rtn)) {
+                throw Error(`输入的数字不合法：${$.fn.val.apply(this, arguments)}`);
+            }
+            return rtn;
+        };
+
+        Array.prototype.last = function () {
+            return this.slice(-1)[0];
+        };
+
+        Number.prototype.roundTo = function (n) {
+            return Math.round(this * Math.pow(10, n)) / Math.pow(10, n);
+        };
+
+        function generateArithmeticArray(min, max, step) {
+            if (!(min <= max)) {
+                throw Error(`最大值 ${max} 比最小值 ${min} 小！`);
+            }
+            if (step <= 0) {
+                throw Error(`步长 ${step} 小于等于0！`);
+            }
+            const maxLength = 1e7;
+            if ((max - min) / step > maxLength) {
+                throw Error(`等差数组量级太大：${(max - min) / step} (>${maxLength}) ！`);
+            }
+            const result = [];
+            let currentValue = min;
+
+            while (currentValue <= max) {
+                result.push(currentValue);
+                currentValue += step;
+            }
+
+            return result;
+        }
+
+        function getRandomElementFromArray(array) {
+            if (array.length === 0) {
+                return undefined; // 如果数组为空，返回 undefined
+            }
+
+            const randomIndex = Math.floor(Math.random() * array.length);
+            return array[randomIndex].roundTo(6);
+        }
+
+        function getRandomNumber(min, max, step) {
+            if (min >= max) {
+                throw Error(`最大值 ${max} 比最小值 ${min} 小！`);
+            }
+
+            if (step <= 0) {
+                throw Error(`步长 ${step} 小于等于0！`);
+            }
+
+            const range = (max - min) / step;
+            const randomIndex = Math.floor(Math.random() * (range + 1));
+            return (min + randomIndex * step).roundTo(6);
+        }
+
+        function getRandomNumberWithBlacklist(min, max, step, blacklist) {
+            if (min >= max) {
+                throw Error(`最大值 ${max} 比最小值 ${min} 小！`);
+            }
+
+            if (step <= 0) {
+                throw Error(`步长 ${step} 小于等于0！`);
+            }
+
+            if (!Array.isArray(blacklist)) {
+                throw new Error("黑名单必须是一个数组。");
+            }
+
+            // 对黑名单进行去重
+            const deduplicatedBlacklist = Array.from(new Set(blacklist));
+
+            // 确定指定范围内可能抽到的数字数量
+            const possibleNumbersCount = Math.floor((max - min) / step) + 1;
+
+            // 判断是否所有可能数字都在黑名单中
+            if (deduplicatedBlacklist.length >= possibleNumbersCount) {
+                throw new Error("指定区间内的所有可能数字都在黑名单中。");
+            }
+
+            const isBlacklisted = number => deduplicatedBlacklist.includes(number);
+
+            let randomNumber = min + Math.floor(Math.random() * possibleNumbersCount) * step;
+
+            // 循环直到找到不在黑名单中的数字
+            while (isBlacklisted(randomNumber)) {
+                randomNumber += step;
+
+                // 超过范围上界时返回范围下界继续找
+                if (randomNumber > max) {
+                    randomNumber = min;
+                }
+            }
+
+            return randomNumber.roundTo(6);
+        }
+
+
+        function filterOutSpecifiedItems(mainArray, specifiedArray) {
+            return mainArray.filter(item => !specifiedArray.includes(item));
+        }
+
+        function splitStringByNonDigitCharacters(inputString) {
+            if (!inputString.trim()) {
+                return [];
+            }
+            const regex = /[-+]?\d+(\.\d+)?/g;
+            return inputString.match(regex).map(parseFloat);
+        }
+
+        function getRandomFloat(min, max) {
+            if (min >= max) {
+                throw Error(`最大值 ${max} 比最小值 ${min} 小！`);
+            }
+
+            const random = Math.random();
+            const range = max - min;
+            return (min + random * range).roundTo(6);
+        }
+
+        $(function () {
+            window.now = [];
+
+            function changeTo($element) {
+                $element.show().css({
+                    "position": "relative",
+                    "left": "100%"
+                }).animate({
+                    "position": "relative",
+                    "left": "0",
+                });
+                if (window.now.length !== 0) {
+                    window.now.last().css({
+                        "height": "0"
+                    }).animate({
+                        "position": "relative",
+                        "left": "-100%",
+                    }, function () {
+                        $(this).hide();
+                    });
+                }
+                window.now.push($element);
+                updateCrumb();
+            }
+
+            function showResult(result, resultFor) {
+                if (result === undefined) {
+                    alert("无法生成一个符合条件的结果");
+                }
+                if (resultFor) {
+                    $(`[data-result-for=${resultFor}]`).val(result);
+                } else {
+                    $(`[data-result-for=${now.last().attr("id")}]`).val(result);
+                }
+            }
+
+            function updateCrumb() {
+                const $crumb = $("#crumb");
+                $crumb.empty();
+                for (let i = 0; i < now.length - 1; i++) {
+                    const $element = now[i];
+                    $crumb.append(`<li><a data-index="${i}">${$element.attr("data-step")}</a></li>`);
+                }
+                $crumb.append(`<li class="active">${now[now.length - 1].attr("data-step")}</li>`);
+                $("[data-index]").click(function () {
+                    const i = parseInt($(this).attr("data-index"));
+                    const $to = now[i];
+                    changeTo($to);
+                    now.splice(i + 1);
+                    updateCrumb();
+                });
+            }
+
+            $("[data-to]").click(function () {
+                changeTo($(`#${$(this).attr("data-to")}`));
+            });
+
+            $("[data-step]").hide();
+
+            changeTo($("#welcome"));
+
+            function checkSwitch() {
+                $("[data-at]").each(function () {
+                    const $switch = $(`#${$(this).attr("data-at")}`);
+                    if ($(this).attr("data-as") === $switch.val()) {
+                        setTimeout(() => {
+                            $(this).css({"opacity": "0"});
+                            // console.log("down");
+                            $(this).slideDown(200, function () {
+                                $(this).fadeTo(200, 1);
+                            });
+                        }, 200);
+                    } else {
+                        if ($(this).is(":visible") || $(this).parentsUntil("[data-step]").is(":hidden"))
+                            $(this).fadeTo(200, 0, function () {
+                                // console.log("up");
+                                $(this).slideUp(200);
+                            });
+                    }
+                });
+            }
+
+            $("[data-switch]").change(function () {
+                checkSwitch();
+            });
+
+            $("[data-gen-for]").click(function () {
+                try {
+                    const genFor = $(this).attr("data-gen-for");
+                    switch (genFor) {
+                        case "randomNum":
+                            const randomNumGenMode = $("#randomNumGenMode").val();
+                            switch (randomNumGenMode) {
+                                case "range":
+                                    showResult(
+                                        getRandomElementFromArray(
+                                            filterOutSpecifiedItems(
+                                                generateArithmeticArray(
+                                                    $("[data-at=randomNumGenMode][data-as=range] [name=min]").valNum(),
+                                                    $("[data-at=randomNumGenMode][data-as=range] [name=max]").valNum(),
+                                                    $("[data-at=randomNumGenMode][data-as=range] [name=step]").valNum(),
+                                                ),
+                                                splitStringByNonDigitCharacters(
+                                                    $("[data-at=randomNumGenMode][data-as=range] [name=ban]").val(),
+                                                )
+                                            )
+                                        )
+                                    );
+                                    break;
+                                case "bigRange":
+                                    showResult(
+                                        getRandomNumberWithBlacklist(
+                                            $("[data-at=randomNumGenMode][data-as=bigRange] [name=min]").valNum(),
+                                            $("[data-at=randomNumGenMode][data-as=bigRange] [name=max]").valNum(),
+                                            $("[data-at=randomNumGenMode][data-as=bigRange] [name=step]").valNum(),
+                                            splitStringByNonDigitCharacters(
+                                                $("[data-at=randomNumGenMode][data-as=bigRange] [name=ban]").val(),
+                                            )
+                                        )
+                                    );
+                                    break;
+                                case "choose":
+                                    showResult(
+                                        getRandomElementFromArray(
+                                            splitStringByNonDigitCharacters(
+                                                $("[data-at=randomNumGenMode][data-as=choose] [name=list]").val(),
+                                            )
+                                        )
+                                    );
+                                    break;
+                                case "section":
+                                    showResult(
+                                        getRandomFloat(
+                                            $("[data-at=randomNumGenMode][data-as=section] [name=min]").valNum(),
+                                            $("[data-at=randomNumGenMode][data-as=section] [name=max]").valNum(),
+                                        )
+                                    );
+                            }
+                            break;
+                    }
+                } catch (e) {
+                    alert(e);
+                }
+            });
+
+            checkSwitch();
+        });
+    </script>
+</head>
+<body>
+<br>
+<div class="container">
+    <ul class="breadcrumb" id="crumb">
+        <!--        <li><a href="#">Home</a></li>-->
+        <!--        <li><a href="#">2013</a></li>-->
+        <!--        <li class="active">十一月</li>-->
+    </ul>
+</div>
+<div id="welcome" data-step="Home">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>数据生成器</h1>
+            <p>配置一下你的数据生成选项，然后我们现在就开始吧</p>
+        </div>
+        <a class="btn btn-primary btn-block btn-lg" data-to="fastGen">快速生成 →</a>
+        <a class="btn btn-default btn-block btn-lg" data-to="profess">专业模式 →</a>
+    </div>
+</div>
+<div id="fastGen" data-step="快速生成">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>快速生成</h1>
+            <p>请选择以下几个选项</p>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                简单数字
+            </div>
+            <div class="panel-body">
+                <p><a data-to="randomNum">我只想要一个随机数 →</a></p>
+                <p><a data-to="randomArray">我只想要一个随机数组 →</a></p>
+                <p><a data-to="randomMatrix">我只想要一个随机二维数组 →</a></p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                简单文本
+            </div>
+            <div class="panel-body">
+                <p><a data-to="randomChar">我只想要一个随机字符 →</a></p>
+                <p><a data-to="randomString">我只想要一个随机字符串 →</a></p>
+                <p><a data-to="randomStringArray">我只想要一个随机字符串组 →</a></p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                树和森林
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-warning">选择生成一棵树或森林，进而生成它的遍历和点边集</div>
+                <p><a data-to="randomTree">我想要一棵完全随机的树 →</a></p>
+                <p><a data-to="randomBinaryTree">我想要一棵随机二叉树（满二叉树/平衡二叉树/完全二叉树/二叉平衡树/红黑树...） →</a></p>
+                <p><a data-to="randomForest">我想要一片森林 →</a></p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                图
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-warning">选择生成一张图，进而生成它的遍历和点边集</div>
+                <p><a data-to="randomTree">我想要一张图（无向图/有向图/连通图/加权图...） →</a></p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                数据表
+            </div>
+            <div class="panel-body">
+                <p><a data-to="dataSheet">我想要一张数据表 →</a></p>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                棋盘
+            </div>
+            <div class="panel-body">
+                <p><a data-to="labyrinth">我想要一个迷宫 →</a></p>
+                <p><a data-to="minesweeper">我想要一个扫雷棋盘 →</a></p>
+                <p><a data-to="goBang">我想要一个未获胜的五子棋棋盘 →</a></p>
+                <p><a data-to="chineseChess">我想要一个随机的中国象棋棋盘 →</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="randomNum" data-step="随机数">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>生成随机数</h1>
+            <p>请填写以下表单，然后生成</p>
+        </div>
+        <div class="form-group">
+            <label>
+                生成方式
+                <select class="form-control" id="randomNumGenMode" data-switch>
+                    <option value="range">最大值，最小值，步长（小量级，效果优化）</option>
+                    <option value="bigRange">最大值，最小值，步长（大量级，效率优化）</option>
+                    <option value="choose">数组随机挑选</option>
+                    <option value="section">区间小数</option>
+                </select>
+            </label>
+        </div>
+        <div data-at="randomNumGenMode" data-as="range">
+            <div class="form-group">
+                <label>
+                    最大值
+                    <input class="form-control" name="max" placeholder="100">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    最小值
+                    <input class="form-control" name="min" placeholder="0">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    步长
+                    <input class="form-control" name="step" placeholder="1">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    黑名单数字（使用非数字符号隔开）
+                    <input class="form-control" name="ban">
+                </label>
+            </div>
+        </div>
+        <div data-at="randomNumGenMode" data-as="bigRange">
+            <div class="form-group">
+                <label>
+                    最大值
+                    <input class="form-control" name="max" placeholder="100">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    最小值
+                    <input class="form-control" name="min" placeholder="0">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    步长
+                    <input class="form-control" name="step" placeholder="1">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    黑名单数字（使用非数字符号隔开）
+                    <input class="form-control" name="ban">
+                </label>
+            </div>
+        </div>
+        <div data-at="randomNumGenMode" data-as="choose">
+            <div class="form-group">
+                <label>
+                    挑选列表
+                    <input class="form-control" name="list">
+                </label>
+            </div>
+        </div>
+        <div data-at="randomNumGenMode" data-as="section">
+            <div class="form-group">
+                <label>
+                    最大值
+                    <input class="form-control" name="max" placeholder="1">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    最小值
+                    <input class="form-control" name="min" placeholder="0">
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <p><a class="btn btn-primary btn-lg btn-block" data-gen-for="randomNum">生成</a></p>
+        </div>
+        <div class="form-group">
+            <label>
+                生成结果
+                <textarea data-result-for="randomNum" class="form-control text-danger"></textarea>
+            </label>
+        </div>
+    </div>
+</div>
+<div id="randomArray" data-step="随机数组">
+    <div class="container">
+
+    </div>
+</div>
+</body>
+</html>

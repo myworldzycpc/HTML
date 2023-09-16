@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>能感受压力的按钮</title>
+    <script>
+        $(function () {
+            const $pButton = $("#pButton");
+
+            function processPress(event) {
+                const p = event.pressure;
+                console.log(p);
+                if (p !== undefined) {
+                    if (window.entered && p > 0) {
+                        $pButton.css({"filter": `brightness(${1 - p * 0.9})`}).html(p < 0.8 ? "真舒服" : "压死我了");
+                    } else {
+                        $pButton.css({"filter": `brightness(1)`}).html("摸摸我");
+                    }
+                } else {
+                    alert(p);
+                }
+            }
+
+            window.entered = false;
+
+            $pButton[0].addEventListener("pointerdown", (event) => {
+                processPress(event);
+            });
+            $pButton[0].addEventListener("pointerup", (event) => {
+                processPress(event);
+            });
+            $pButton[0].addEventListener("pointermove", (event) => {
+                processPress(event);
+            });
+            $pButton[0].addEventListener("pointerenter", (event) => {
+                window.entered = true;
+                processPress(event);
+            });
+            $pButton[0].addEventListener("pointerleave", (event) => {
+                window.entered = false;
+                processPress(event);
+            });
+
+            document.addEventListener('touchstart', (event) => {
+                // console.log(`touchmove: ${event.pressure}`);
+                event.preventDefault();
+            }, {passive: false});
+        });
+    </script>
+    <style>
+        .pressingButton {
+            display: inline-flex;
+            background-color: #E0E0E0;
+            padding: 5px;
+            transform: translate(-50%, -50%) scale(2);
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="pressingButton" id="pButton">摸摸我</div>
+
+</body>
+</html>

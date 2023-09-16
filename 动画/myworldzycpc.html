@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Text Spiral Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            perspective: 800px;
+            position: relative;
+            font-size: 48px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .text {
+            position: absolute;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+
+            animation: flyIn 2s forwards;
+        }
+
+        @keyframes flyIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translateZ(800px) rotateY(0) translateY(100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) translateZ(0) rotateY(1080deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="text">myworldzycpc</div>
+</div>
+
+<script>
+    // Optional: Remove the text after the fade-out animation completes
+</script>
+</body>
+</html>

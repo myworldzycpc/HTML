@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="jquery.min.js"></script>
+</head>
+<body>
+
+<style>
+
+    td {
+        border: none !important;
+        color: initial !important;
+        padding: 0 !important;
+    }
+
+    .outBox {
+        text-align: center;
+    }
+
+    .mainBox {
+        background-color: #A0A0FF;
+        display: inline-block;
+        border-radius: 10px;
+        box-shadow: 5px 5px 0 #A0A0FF80;
+        padding-right: 10px;
+        padding-bottom: 10px;
+    }
+
+    .screenBox {
+        display: flex;
+    }
+
+    .screen {
+        width: 100%;
+        background-color: #E0E0E0;
+        border-radius: 10px;
+        padding: 10px;
+        font-family: "JetBrains Mono", Consolas, "Courier New", Courier, monospace;
+        box-shadow: 0 0 0 #00000000, inset 5px 5px 0 #00000080;
+        border: none;
+        transition: 0.5s;
+        text-shadow: 1px 1px 0 #00000080;
+    }
+
+    .screen:focus {
+        outline: none;
+        transition: 0.5s;
+        filter: brightness(1.1);
+        box-shadow: 0 0 30px #000000A0, inset 5px 5px 0 #00000080;
+    }
+
+    .screen::placeholder {
+        color: #00000080;
+        text-shadow: none;
+        font-weight: bold;
+    }
+
+    .outSpace {
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
+    .key {
+        background-color: #7bb678;
+        border-radius: 10px;
+        padding: 10px;
+        font-family: "Fira Mono", "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
+        box-shadow: 3px 3px 0 #00000080;
+        font-size: 20px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .keyResult {
+        background-color: #FF8080FF;
+    }
+
+    .key:active {
+        box-shadow: none;
+        transform: translateX(3px) translateY(3px);
+        user-select: none;
+    }
+
+    .activeKey {
+        box-shadow: none;
+        transform: translateX(3px) translateY(3px);
+        user-select: none;
+    }
+
+    .gray {
+        background-color: #C0C0C0;
+    }
+
+    .errorScreen {
+        background-color: red;
+    }
+
+    .keyAC {
+        background-color: #C0C000;
+    }
+
+    .keyBack {
+        background-color: #0080FF;
+    }
+
+    * {
+        transition: 0.2s;
+    }
+</style>
+
+<script>
+
+    /**
+     *
+     * @param {jQuery}$element
+     * @returns {any}
+     */
+    function getAnother($element) {
+        if ($element.attr("data-another")) {
+            try {
+                return eval($element.attr("data-another"));
+            } catch (e) {
+                return [$element.attr("data-another")];
+            }
+        } else {
+            return []
+        }
+    }
+
+    /**
+     *
+     * @param {jQuery}$element
+     */
+    function getInput($element) {
+        return $element.attr("data-input");
+    }
+
+    window.lastResult = "";
+
+    function calc() {
+        try {
+            return eval($(".screen").val());
+        } catch (e) {
+            return Error(e);
+        }
+    }
+
+    $(function () {
+        $("body")
+            .keydown(function (e) {
+                // console.log(e.key);
+                if (e.key === "Escape" && document.activeElement === $(".screen")[0]) {
+                    $(".screen").blur();
+                } else {
+                    $(".key").each(function () {
+                        if (e.key === $(this).text() || getAnother($(this)).find((i) => i === e.key)) {
+                            $(this).addClass("activeKey");
+                            if ($(".screen")[0] !== document.activeElement || ["Enter", "Escape"].find((i) => i === e.key)) {
+                                $(this).click();
+                            }
+                        }
+                    });
+                }
+            })
+            .keyup(function (e) {
+                if (e.key === "t" && document.activeElement !== $(".screen")[0]) {
+                    $(".screen").focus();
+                } else {
+                    $(".key").each(function () {
+                        if (e.key === $(this).text() || getAnother($(this)).find((i) => i === e.key)) {
+                            $(this).removeClass("activeKey");
+                        }
+                    });
+                }
+            });
+        $(".keyInput").click(function () {
+            const $screen = $(".screen");
+            if (getInput($(this))) {
+                $screen.val($screen.val() + getInput($(this)));
+            } else {
+                $screen.val($screen.val() + $(this).text());
+            }
+        });
+        $(".keyBack").click(function () {
+            const $screen = $(".screen");
+            $screen.val($screen.val().slice(0, -1));
+        });
+        $(".keyAC").click(function () {
+            const $screen = $(".screen");
+            $screen.val("");
+        });
+        $(".keyResult").click(() => {
+            const result = calc();
+            if (result instanceof Error) {
+                alert(`错误: \n${result}`)
+            } else {
+                alert(`结果: \n${result}`)
+            }
+        })
+
+        // setInterval(function () {
+        //     const result = calc();
+        //     if (result instanceof Error) {
+        //         $(".screen").addClass("errorScreen");
+        //     } else {
+        //         $(".screen").removeClass("errorScreen");
+        //     }
+        // }, 200);
+    })
+</script>
+
+<div class="outBox">
+    <div class="outSpace mainBox">
+        <div class="screenBox"><input class="outSpace screen" placeholder="JavaScript"></div>
+        <table class="keyBoard">
+            <tr class="keyBoardRow">
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="S" data-input="Math.asin(">sin<sup>-1</sup></div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="s" data-input="Math.sin(">sin</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="l">=></div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="i" data-input="Infinity">∞</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="['[']" data-input="Math.floor(">floor</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">&</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-input="Math.sqrt(" data-another="['@']">√</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">(</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">7</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">8</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">9</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">/</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyBack">Backspace</div>
+                </td>
+            </tr>
+            <tr class="keyBoardRow">
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="C" data-input="Math.acos(">cos<sup>-1</sup></div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="c" data-input="Math.cos(">cos</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="L" data-input="()=>{">λ</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="n" data-input="NaN">∦</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="[']']" data-input="Math.ceil(">ceil</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">|</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-input="Math.abs(" data-another="['a']">abs</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">)</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">4</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">5</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">6</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">*</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyAC" data-another="['Escape']">AC</div>
+                </td>
+
+            </tr>
+            <tr class="keyBoardRow">
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="D" data-input="Math.atan(">tan<sup>-1</sup></sup></div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="d" data-input="Math.tan(">tan</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">{</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-input="undefined" data-another="u">⊘</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="['r']" data-input="Math.round(">round</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">^</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">&gt;</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">**</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">1</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">2</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">3</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">-</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-input="Math.random()" data-another="R">🎲</div>
+                </td>
+            </tr>
+            <tr class="keyBoardRow">
+                <td>
+                    <div class="outSpace key gray keyInput">y</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="O" data-input="Math.max(">max</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">}</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">,</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="['p']" data-input="Math.PI">π</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">~</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">&lt;</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">%</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">.</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">0</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyInput">+</div>
+                </td>
+                <td>
+                    <div class="outSpace key keyResult" data-another="['Enter']">=</div>
+                </td>
+            </tr>
+            <tr class="keyBoardRow">
+                <td>
+                    <div class="outSpace key gray keyInput">x</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="o" data-input="Math.min(">min</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">;</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="m" data-input="Math.sum(">∑</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="E" data-input="Math.exp(">exp</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput">e</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="g" data-input="Math.log(">log</div>
+                </td>
+                <td>
+                    <div class="outSpace key gray keyInput" data-another="G" data-input="Math.ln(">ln</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <p style="color: gray; line-height: 40px">Version 2.0<br>Powered by myworldzycpc</p>
+</div>
+
+</body>
+</html>

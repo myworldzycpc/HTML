@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <title>随机抽取同学姓名</title>
+    <style>
+
+        body {
+            margin: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body.simple {
+            background-color: #f0f0f0;
+
+        }
+
+        body.exquisite {
+            background: linear-gradient(to left top, blue, red);
+        }
+
+        * {
+            transition: 0.2s;
+        }
+
+        body.exquisite .outbox {
+            color: white;
+        }
+
+        .outbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30vh;
+        }
+
+
+        body.exquisite .outline {
+            /*color: white;*/
+        }
+
+        .outline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+        }
+
+        body.simple .container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body.exquisite .container {
+            background-color: #ffffff80;
+            /*border: 1px solid black;*/
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .button {
+            border: none;
+            display: inline-block;
+            padding: 20px 40px;
+            font-size: 36px;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .button:active {
+            filter: brightness(0.9);
+        }
+
+        .button.quick:active {
+            transform: scale(2);
+        }
+
+        .stop-button {
+            background-color: #ff7b00;
+            font-size: 48px;
+            padding: 20px 40px;
+        }
+
+        .cancel-button {
+            cursor: pointer;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        .advanced-options {
+            margin-top: 20px;
+        }
+
+        .options-toggle {
+            cursor: pointer;
+            color: #007bff;
+            border-bottom: 1px solid #00000080;
+        }
+
+        .options-content {
+            margin-top: 10px;
+            display: none;
+        }
+
+        /*.options-content.expanded {*/
+        /*    display: block;*/
+        /*    transition: 0.2s;*/
+        /*}*/
+
+        .options-content label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .options-content input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .options-content select {
+            margin-top: 5px;
+            padding: 5px;
+        }
+
+        /* 添加过渡效果 */
+        .container,
+        .result,
+        .options-content {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+    <script>
+        $(function () {
+            // 同学姓名数组
+            const students = ['学生1', '学生2', '学生3', '学生4', '学生5', '学生6', '学生7', '学生8', '学生9', '学生10'];
+            window.pickedStudents = [];
+
+            // 获取元素
+            const startButton = $('#startButton');
+            const resultDiv = $('.result');
+            const optionsToggle = $('.options-toggle');
+            const optionsContent = $('.options-content');
+            const advancedOptions = $('.advanced-options');
+            const quickModeCheckbox = $('#quickModeCheckbox');
+            const numOfStudentsSelect = $('#numOfStudentsSelect');
+            const excludeStudentsSelect = $('#excludeStudentsSelect');
+            const styleSelect = $('#styleSelect');
+            const $cancelButton = $('#cancel');
+            const $name = $("#name");
+
+            function changeStyle() {
+                var selectedStyle = styleSelect.val();
+                $('body').attr('class', selectedStyle);
+            }
+
+            function changeName(content) {
+                $name.text(content);
+                $name.css({"font-size": `${content.length < 10 ? 10 : 100 / content.length}vw`})
+            }
+
+            // 切换界面风格
+            changeStyle();
+            styleSelect.on('change', changeStyle);
+
+            // 高级选项折叠效果
+            optionsToggle.on('click', function () {
+                optionsContent.slideToggle();
+            });
+
+            // 随机抽取姓名
+            function pickRandomStudent() {
+                var numOfStudents = parseInt(numOfStudentsSelect.val());
+                var excludedStudents = excludeStudentsSelect.val().split(" ");
+
+                var availableStudents = students.filter(function (student) {
+                    return !excludedStudents.includes(student);
+                });
+
+                var pickedStudents = [];
+                for (var i = 0; i < numOfStudents; i++) {
+                    var randomIndex = Math.floor(Math.random() * availableStudents.length);
+                    var pickedStudent = availableStudents.splice(randomIndex, 1)[0];
+                    pickedStudents.push(pickedStudent);
+                }
+
+                return pickedStudents;
+            }
+
+            // 显示抽取结果
+            function showResult() {
+                resultDiv.text('抽取到的同学：' + pickedStudents.join(', '));
+                resultDiv.show();
+            }
+
+            function randomPick() {
+                window.pickedStudents = pickRandomStudent();
+                changeName(pickedStudents.join(', '));
+            }
+
+            // 清除抽取结果
+            function clearResult() {
+                resultDiv.text('');
+                resultDiv.hide();
+            }
+
+            // 停止抽取
+            function stopPicking() {
+                clearInterval(interval);
+                interval = undefined;
+                startButton.text(quick ? "按住开始" : '开始').removeClass("stop-button");
+            }
+
+            function toStop() {
+                stopPicking();
+                showResult();
+                advancedOptions.show();
+            }
+
+            function toStart() {
+                startButton.text(quick ? "松手停止" : '停止').addClass("stop-button");
+                advancedOptions.hide();
+                clearResult();
+                randomPick();
+                interval = setInterval(randomPick, 100);
+            }
+
+            function cancel() {
+                cancel = false;
+                stopPicking();
+                advancedOptions.show();
+                $cancelButton.hide();
+                changeName("准备开始");
+
+            }
+
+            // 开始或停止抽取
+            function togglePicking() {
+                if (interval) {
+                    toStop();
+                    $cancelButton.hide();
+                } else {
+                    toStart();
+                    $cancelButton.fadeIn();
+                }
+            }
+
+            function quickStart(e) {
+                if (!interval) {
+                    toStart();
+                }
+                e.preventDefault();
+            }
+
+            function quickStop(e) {
+                if (interval) {
+                    toStop();
+                }
+
+            }
+
+            function processQuickMode() {
+                if (quickModeCheckbox.prop('checked')) {
+                    quick = true;
+                    startButton.addClass("quick")
+                    startButton.unbind("click");
+                    startButton.on('mousedown', quickStart).on('touchstart', quickStart);
+                    $("body").on('blur', quickStop).on('mouseup', quickStop).on('touchend', quickStop);
+                    startButton.text("按住开始");
+                } else {
+                    quick = false;
+                    startButton.removeClass("quick")
+                    startButton.unbind("mousedown").unbind('touchstart');
+                    $("body").unbind("blur").unbind("mouseup").unbind('touchend');
+                    startButton.on('click', togglePicking);
+                    startButton.text("开始");
+                }
+            }
+
+            // 处理快抽模式
+            var interval;
+            var quick = false;
+            processQuickMode();
+            quickModeCheckbox.change(processQuickMode);
+
+            changeName("准备开始");
+
+            $cancelButton.click(cancel);
+        });
+    </script>
+</head>
+<body>
+<div class="outbox">
+    <div id="name">准备开始</div>
+</div>
+<div class="outline">
+    <div class="container">
+        <h2>随机抽取同学姓名</h2>
+        <div>
+            <button id="startButton" class="button">开始</button>
+        </div>
+        <div>
+            <button id="cancel" class="cancel-button" style="display: none">取消</button>
+        </div>
+        <div class="result"></div>
+        <div class="advanced-options">
+            <div class="options-toggle">高级选项</div>
+            <div class="options-content">
+                <label><input type="checkbox" id="quickModeCheckbox"> 快抽模式</label>
+                <label>抽取人数：
+                    <select id="numOfStudentsSelect">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <!-- 添加更多选项 -->
+                    </select>
+                </label>
+                <label>排除请假学生：
+                    <input id="excludeStudentsSelect">
+                </label>
+                <label>切换界面风格：
+                    <select id="styleSelect">
+                        <option value="minimal">极简</option>
+                        <option value="simple" selected>简约</option>
+                        <option value="exquisite">精美</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

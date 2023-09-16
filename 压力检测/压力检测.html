@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title></title>
+    <script>
+        $(function () {
+            document.addEventListener('pointerdown', (event) => {
+                if (event.pressure !== 0) {
+                    console.log(event.pressure);
+                }
+                if (event.pressure === 0.5) {
+                    alert("你的设备似乎不支持压力！");
+                }
+            }, false);
+            document.addEventListener('pointermove', (event) => {
+                if (event.pressure !== 0) {
+                    const edge = 2 ** (10 * event.pressure);
+                    const x = event.pageX;
+                    const y = event.pageY;
+                    if (x > 10 && event.offsetY > 10) {
+                        console.log(event.pressure, x, y);
+                        // event.preventDefault();
+                        const $div = $(`<div />`);
+                        $div.addClass("strokes");
+                        $div.css({
+                            "width": `${edge}px`,
+                            "height": `${edge}px`,
+                            "top": y - edge / 2,
+                            "left": x - edge / 2
+                        });
+                        $("body").append($div);
+                    }
+                }
+            }, false);
+            document.addEventListener('touchmove', (event) => {
+                // console.log(`touchmove: ${event.pressure}`);
+                event.preventDefault();
+            }, {passive: false});
+        });
+    </script>
+    <style>
+        body {
+            position: fixed;
+        }
+
+        .strokes {
+            position: fixed;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+</html>

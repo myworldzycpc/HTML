@@ -1,0 +1,202 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            function longShadow($element, length, startColor = [0, 0, 0], endColor = [255, 255, 255], xd = 1, yd = 1, blurD = 0.5, box = false) {
+                const s = [];
+                for (let i = 1; i < length; i++) {
+                    s.push(`${i * xd}px ${i * yd}px ${i * blurD}px rgb(${startColor[0] + (endColor[0] - startColor[0]) * i / length},${startColor[1] + (endColor[1] - startColor[1]) * i / length},${startColor[2] + (endColor[2] - startColor[2]) * i / length})`);
+                }
+                if (box) {
+                    $element.css({
+                        "box-shadow": s.join(", ")
+                    });
+                } else {
+                    $element.css({
+                        "text-shadow": s.join(", ")
+                    });
+                }
+
+            }
+
+            longShadow($(".test1"), 100, [100, 0, 100], [255, 0, 255], 0.1, 0.1, 0.02)
+            longShadow($(".test2"), 500, [0, 150, 0], [0, 150, 0], 0.1, 0.1, 0)
+            longShadow($(".test3"), 50, [255, 255, 255], [0, 125, 255], 0, 0.1, 0.4)
+            longShadow($(".test4"), 100, [255, 255, 255], [0, 0, 125], 0, 0.1, 0.02)
+
+            longShadow($(".text1"), 200, [255, 0, 0], [255, 255, 255], 0.1, 0.1, 0.005)
+            longShadow($(".text2"), 200, [0, 125, 125], [255, 255, 255], 0, -0.1, 0.005)
+            longShadow($(".text3"), 100, [0, 0, 0], [255, 255, 255], -0.1, 0, 0.01)
+
+            longShadow($(".text4"), 20, [0, 125, 255], [255, 255, 255], 0, 20, 0.1)
+            longShadow($(".text5"), 200, [0, 0, 0], [255, 255, 255], 2, 0, 0.05, true)
+
+            let counter = -90;
+            setInterval(function () {
+                counter++;
+                if (counter > 180) {
+                    counter = -90;
+                }
+                longShadow($(".text6"), 200, [255, 255, 255], [255, 255, 0], 1 - Math.abs(counter / 90), 1 - Math.abs((counter - 90) / 90), 0.05, true)
+            }, 10)
+        });
+    </script>
+    <style>
+
+        .shadowBox {
+            overflow: hidden;
+            display: table-cell;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 40px;
+
+        }
+
+        .bg1 {
+            background-color: rgb(255, 0, 255);
+        }
+
+        .test1 {
+            color: white;
+        }
+
+        .bg2 {
+            background-color: rgb(125, 255, 125);
+        }
+
+        .test2 {
+            color: white;
+        }
+
+        .bg3 {
+            background-color: rgb(0, 125, 255);
+        }
+
+        .test3 {
+            color: white;
+        }
+
+        .bg4 {
+            background-color: rgb(0, 0, 125);
+        }
+
+        .test4 {
+            color: white;
+        }
+
+        .text1 {
+            color: rgba(255, 125, 0);
+        }
+
+        .text2 {
+            color: rgba(0, 255, 0);
+        }
+
+        .text3 {
+            color: rgba(125, 125, 125);
+        }
+
+        .text4 {
+            color: rgb(0, 0, 255);
+            text-align: center;
+            height: 500px;
+        }
+
+        .text5 {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            border: 3px solid black;
+            background-color: red;
+            margin-bottom: 100px;
+        }
+
+        .text6 {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            border: 3px solid black;
+            background-color: yellow;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .灯塔文本 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+        }
+
+        .t {
+            text-align: center;
+            line-height: 100px;
+            font-size: 40px;
+        }
+
+        .end {
+            text-align: center;
+            font-size: 50px;
+            font-weight: lighter;
+            margin-bottom: 50%;
+        }
+
+        .start {
+            text-align: center;
+            font-size: 50px;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<br>
+<div class="container">
+    <div class="start">长阴影 with HTML</div>
+    <hr>
+    <h1>盒子样式：</h1>
+
+    <div class="shadowBox bg1">
+        <div class="shadowObj test1">鲜亮</div>
+
+    </div>
+    <br>
+    <div class="shadowBox bg2">
+        <div class="shadowObj test2">清新</div>
+
+    </div>
+    <br>
+    <div class="shadowBox bg3">
+        <div class="shadowObj test3">晶蓝</div>
+
+    </div>
+    <br>
+    <div class="shadowBox bg4">
+        <div class="shadowObj test4">蔚蓝</div>
+
+    </div>
+
+    <hr>
+    <h1>文字展示：</h1>
+    <p class="t text1">浩荡离愁白日斜，吟鞭东指即天涯。</p>
+    <p class="t text2">好雨知时节，当春乃发生。</p>
+    <p class="t text3">万里悲秋常作客，百年多病独登台</p>
+    <hr>
+    <h1>长阴影的妙用：</h1>
+    <p class="text4">总是那个声音，在你的耳畔回响...</p>
+    <div class="text5"></div>
+
+    <div class="text6">
+        <div class="灯塔文本">灯塔</div>
+    </div>
+    <div style="margin-bottom: 500px"></div>
+    <hr>
+    <div class="end">扁平之风，无处不有</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $(".test").click(function(){
+                $.post("/login/", {"theBtn": "asd"}, function(result){
+                    console.log(result)
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+<h1>This is a fucking test</h1>
+<button class="test" style="font-size: 35px;">CLICK</button>
+</body>
+
+</html>

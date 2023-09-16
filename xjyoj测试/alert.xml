@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>myworldzycpc</title>
+</head>
+<body>
+
+<script>
+    alert("我alert成功了？！");
+    window.location.href = "http://112.253.31.18:8213/blog/63/630463514f85ab7585b8aaf3";
+</script>
+
+</body>
+</html>

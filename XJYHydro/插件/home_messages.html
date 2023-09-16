@@ -1,0 +1,114 @@
+{% extends "layout/home_base.html" %}
+{% block home_content %}
+<script>
+    /* 获取cookie */
+    function getCookie(cname) {
+        const name = cname + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            const c = ca[i].trim();
+            if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+
+    window.messageNotifyInterval = undefined;
+
+    $(function () {
+        const $messageNotifyCheck = $(".messageNotifyCheck");
+
+        let count = 0;
+        window.messageNotifyInterval = setInterval(function () {
+            const notificationCount = $(".notification").length;
+            if (notificationCount > count) {
+                if ($messageNotifyCheck[0].checked && window.Notification && Notification.permission !== "denied") {
+                    Notification.requestPermission(function (status) {
+                        const $notification = $(".notification").eq(notificationCount - 1);
+                        $.post("https://oj.zqy.ac.cn/d/system/api", {"query": "query{users(search: \"" + $notification.find("h2").text() + "\") {\n        _id\n        uname\n        displayName\n        avatarUrl\n      }}"}, function (data, status) {
+                            console.log(data, status);
+                            if (status === 'success') {
+                                const notification = new Notification($notification.find("h2").text(), {
+                                    icon: data["data"]["users"][0]["avatarUrl"],
+                                    body: $notification.find("p").text()
+                                });
+                                notification.onclick = function () {
+                                    $notification.click();
+                                };
+                            } else {
+                                const notification = new Notification($notification.find("h2").text(), {body: $notification.find("p").text()});
+                                notification.onclick = function () {
+                                    $notification.click();
+                                };
+                            }
+                        });
+                    });
+                }
+            }
+            count = notificationCount;
+        });
+
+        /* 消息提醒 */
+        if (getCookie("messageNotify") === "true") {
+            $messageNotifyCheck[0].checked = true;
+            console.log("消息提醒已开启");
+        } else if (getCookie("messageNotify") === "false") {
+            $messageNotifyCheck[0].checked = false;
+        } else {
+            document.cookie = "messageNotify=false; expires=Thu, 18 Dec 2150 12:00:00 GMT";
+        }
+
+        $messageNotifyCheck.change(function () {
+            document.cookie = `messageNotify=${$messageNotifyCheck[0].checked}; expires=Thu, 18 Dec 2150 12:00:00 GMT`;
+            if ($messageNotifyCheck[0].checked) {
+                Notification.requestPermission(function (status) {
+                    // 这将使我们能在 Chrome/Safari 中使用 Notification.permission
+                    if (Notification.permission !== status) {
+                        Notification.permission = status;
+                    }
+                });
+            }
+        });
+    });
+</script>
+<style>
+    .messageNotifyBox {
+        background-color: white;
+        z-index: 999;
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        box-shadow: 0 0.375rem 1.375rem rgba(175, 194, 201, 0.5);
+        transition: 0.2s;
+        user-select: none;
+        border-radius: 10px;
+        padding: .7em .9375rem;
+    }
+
+    .messageNotifyCheck {
+        display: inline;
+    }
+
+    .messageNotifyLabel {
+        cursor: pointer;
+    }
+
+    .theme--dark body .messageNotifyBox {
+        background-color: rgb(50, 51, 52);
+        box-shadow: 0 0.375rem 1.375rem rgba(0, 0, 0, 0.5);
+    }
+</style>
+<div class="section">
+    <div id="messagePad">
+        {{ noscript_note.render() }}
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+<div class="messageNotifyBox">
+    <label class="messageNotifyLabel">
+        <input class="messageNotifyCheck" type="checkbox">
+        系统通知提醒
+    </label>
+</div>
+{% endblock %}

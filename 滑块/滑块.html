@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <title>滑块</title>
+    <style>
+        .mainBox {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /*border: 1px solid black;*/
+        }
+
+        .line {
+            width: 300px;
+            height: 10px;
+            border-radius: 10px;
+            border: 1px solid black;
+            overflow: hidden;
+        }
+
+        .progressBar {
+            position: absolute;
+            background-color: dodgerblue;
+            width: 100px;
+            height: 10px;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .slider {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: gray;
+            border: 1px solid black;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .maxValue {
+            position: absolute;
+            right: 0;
+        }
+
+        .value {
+            width: 40px;
+            height: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .infos {
+            margin-bottom: 5px;
+        }
+
+        .currValue {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .label {
+            position: fixed;
+            bottom: 45px;
+            transform: translate(-50%, 0) translate(20px, 0);
+        }
+
+    </style>
+    <script>
+        $(function () {
+
+            const $progressBar = $("#progressBar");
+
+            let currX = Number($progressBar.css("width").replaceAll("px", ""));
+            let nowCurr = currX;
+
+            $("#slider").mousedown(function (e) {
+                window.mousePos = [e.pageX, e.pageY];
+                console.log(mousePos);
+                return false;
+            });
+
+            function stopMouse(e) {
+                window.mousePos = undefined;
+                currX = Number($progressBar.css("width").replaceAll("px", ""));
+                console.log(mousePos);
+            }
+
+            function clamp(x, min, max) {
+                if (x > max) {
+                    return max;
+                } else if (x < min) {
+                    return min;
+                }
+                return x;
+            }
+
+            function moveTo(x) {
+                x = clamp(x, 0, 300);
+                nowCurr = x;
+                $progressBar.css({"width": x});
+
+            }
+
+            function calcValue(curr, min, max, step) {
+                min = Number(min);
+                max = Number(max);
+                if (step) {
+                    step = Number(step);
+                    return clamp(Math.round((min + (max - min) * curr) / step) * step, min, max);
+                } else {
+                    return min + (max - min) * curr;
+                }
+            }
+
+            $(document).mouseup(stopMouse).blur(stopMouse).mousemove(function (e) {
+                if (window.mousePos && !isNaN(e.pageX)) {
+                    moveTo(currX + e.pageX - window.mousePos[0]);
+                    $("#currValue").text(calcValue(nowCurr / 300, $("#minValue").val(), $("#maxValue").val(), $("#stepValue").val()));
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div class="mainBox">
+    <div class="infos">
+        <label for="minValue" class="label">最小</label>
+        <input class="value" id="minValue" placeholder="">
+        <label for="stepValue" class="label">步长</label>
+        <input class="value" id="stepValue" placeholder="">
+        <span class="currValue" id="currValue">123456789</span>
+        <span class="maxValue">
+            <label for="maxValue" class="label">最大</label>
+            <input class="value" id="maxValue" placeholder="">
+        </span>
+    </div>
+    <div class="line">
+        <div class="progressBar" id="progressBar">
+            <div class="slider" id="slider">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

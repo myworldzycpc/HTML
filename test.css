@@ -1,0 +1,15 @@
+.left {
+    line-height: 1;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    display: table-cell;
+    min-height: 34px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    margin-bottom: 0;
+    box-sizing: border-box;
+}
+
+.form-group {
+    box-sizing: border-box;
+}

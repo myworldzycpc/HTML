@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <title>特效输入框</title>
+    <style>
+        #input {
+            border-radius: 10px;
+            border: 3px solid red;
+            padding: 10px;
+            word-break: break-all;
+            white-space: pre;
+        }
+
+        #insertion {
+            color: deepskyblue;
+            animation-name: flicker;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes flicker {
+            0% {
+                opacity: 1.0;
+            }
+            50% {
+                opacity: 0.0;
+            }
+            100% {
+                opacity: 1.0;
+            }
+        }
+    </style>
+    <script>
+        $(function () {
+            var letterList = [];
+            var nextId = 0;
+            var insertIndex = 0;
+
+            const $insertion = $("<span />")
+                .attr("id", "insertion")
+                .html("|")
+
+            function updateInsertion() {
+                if (insertIndex === 0) {
+                    $("#input").prepend($insertion);
+                } else {
+                    $(`#letter${letterList[insertIndex - 1]}`).after($insertion);
+                }
+
+            }
+
+            updateInsertion();
+
+            function setInsertIndex(index) {
+                insertIndex = index;
+
+            }
+
+            function getID() {
+                return nextId++;
+            }
+
+            const functionKeys = {
+                8: function () {
+                    // 退格
+                    if (insertIndex > 0) {
+                        const $span = $(`#letter${letterList[insertIndex - 1]}`);
+                        // console.log($span);
+                        // console.log(letterList[insertIndex]);
+                        $span.removeClass("alive");
+                        $span.animate({
+                            "bottom": "-10px",
+                            "opacity": "0.0",
+                        }, 500, function () {
+                            $span.remove();
+                        });
+                        letterList.splice(insertIndex - 1, 1);
+                        setInsertIndex(insertIndex - 1);
+                        updateInsertion();
+                        console.log(letterList);
+
+                    } else {
+                        console.log("退格到边缘");
+                        $("#input").stop().css({"margin-right": "0"}).animate({
+                            "margin-left": "2cm",
+                        }, 200, function () {
+                            $("#input").animate({
+                                "margin-left": "0",
+                            }, 200)
+                        })
+                    }
+                },
+                37: function () {
+                    // <--
+                    if (insertIndex > 0) {
+                        setInsertIndex(insertIndex - 1);
+                        updateInsertion();
+                    } else {
+                        console.log("已到达开头");
+                        $("#input").stop().css({"margin-right": "0"}).animate({
+                            "margin-left": "2cm",
+                        }, 200, function () {
+                            $("#input").animate({
+                                "margin-left": "0",
+                            }, 200)
+                        })
+                    }
+                },
+                39: function () {
+                    // -->
+                    if (insertIndex < letterList.length) {
+                        setInsertIndex(insertIndex + 1);
+                        updateInsertion();
+                    } else {
+                        console.log("已到达结尾");
+                        $("#input").stop().css({"margin-left": "0"}).animate({
+                            "margin-right": "2cm",
+                        }, 200, function () {
+                            $("#input").animate({
+                                "margin-right": "0",
+                            }, 200)
+                        })
+                    }
+                },
+                35: function () {
+                    // End
+                    setInsertIndex(letterList.length);
+                    updateInsertion();
+                },
+                36: function () {
+                    // Home
+                    setInsertIndex(0);
+                    updateInsertion();
+
+                },
+                46: function () {
+                    // Delete
+                    if (insertIndex < letterList.length) {
+                        const $span = $(`#letter${letterList[insertIndex]}`);
+                        // console.log($span);
+                        // console.log(letterList[insertIndex]);
+                        $span.removeClass("alive");
+                        $span.animate({
+                            "bottom": "-10px",
+                            "opacity": "0.0",
+                        }, 500, function () {
+                            $span.remove();
+                        });
+                        letterList.splice(insertIndex, 1);
+                        console.log(letterList);
+
+                    } else {
+                        console.log("退格到边缘");
+                        $("#input").stop().css({"margin-left": "0"}).animate({
+                            "margin-right": "2cm",
+                        }, 200, function () {
+                            $("#input").animate({
+                                "margin-right": "0",
+                            }, 200)
+                        })
+                    }
+                }
+            }
+
+            // const pressingFunctionKeys = {};
+
+            function isInclude(code) {
+                return Object.keys(functionKeys).indexOf(code.toString()) !== -1;
+            }
+
+            // for (const key of Object.keys(functionKeys)) {
+            //     pressingFunctionKeys[key] = {
+            //         "pressing": false,
+            //         "duration": 0,
+            //     }
+            // }
+
+            $("body")
+                .keypress(function (event) {
+                    if (!isInclude(event.keyCode)) {
+                        const id = getID();
+                        const $span = $("<span />");
+                        $span.css({
+                            "position": "relative",
+                            "bottom": "10px",
+                            "opacity": "0.0",
+                        })
+                        if (event.keyCode === 13) {
+                            $span.css({
+                                "color": "orange",
+                            })
+                        }
+                        $span.addClass("alive");
+                        $span.text(event.key)
+                        if (insertIndex === 0) {
+                            $("#input").prepend($span);
+                        } else {
+                            $(`#letter${letterList[insertIndex - 1]}`).after($span);
+                        }
+                        letterList.splice(insertIndex, 0, id);
+                        console.log(`letterList: ${letterList}`);
+                        setInsertIndex(insertIndex + 1);
+                        updateInsertion();
+
+                        $span.attr("id", `letter${id}`);
+                        $span.animate({
+                            "bottom": "0px",
+                            "opacity": "1.0",
+                        }, 500);
+                    }
+                })
+                .keydown(function (event) {
+                    console.log(`keydown: ${event.keyCode}`);
+                    if (isInclude(event.keyCode)) {
+                        functionKeys[event.keyCode]();
+                    }
+                })
+            // .keyup(function (event) {
+            //     console.log(`keyup: ${event.keyCode}`);
+            //     if (isInclude(event.keyCode)) {
+            //         pressingFunctionKeys[event.keyCode].pressing = false;
+            //     }
+            // });
+
+            $("#clear").click(function () {
+                const $span = $(`#input > .alive`);
+                // console.log($span);
+                // console.log(letterList[insertIndex]);
+                $span.removeClass("alive");
+                $span.animate({
+                    "bottom": "-10px",
+                    "opacity": "0.0",
+                }, 500, function () {
+                    $span.remove();
+                });
+                letterList = [];
+                setInsertIndex(0);
+                updateInsertion();
+                $("#clear").blur();
+            })
+
+        })
+    </script>
+</head>
+<body>
+<div id="input"></div>
+<h1>支持的功能：</h1>
+<ul>
+    <li>退格键删除前面的</li>
+    <li>Delete 键删除后面的</li>
+    <li>按左右方向键移动插入点</li>
+    <li>通过按Home、End来快速定位到开头和结尾</li>
+    <li>换行符呈现为橙色Enter</li>
+    <li>删除到边缘或者是插入点移动到边缘，会有弹性提示</li>
+    <li>长按某键可以连续输入，包括退格键、方向键和Delete</li>
+</ul>
+<button id="clear">清空</button>
+</body>
+</html>

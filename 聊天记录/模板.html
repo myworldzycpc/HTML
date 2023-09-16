@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!--    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <title>聊天记录</title>
+    <style>
+        .messagepad {
+            position: relative;
+        }
+
+        .messagepad__content {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 11rem;
+            bottom: 1rem;
+            overflow: auto;
+            padding: 1.875rem;
+            margin: 1rem;
+            user-select: none;
+        }
+
+        .content {
+            position: absolute;
+            border-radius: 20px;
+            background-color: #E0E0E0;
+            left: 0;
+            right: 0;
+            top: 11rem;
+            bottom: 1rem;
+            overflow: auto;
+            padding: 1.875rem;
+            margin: 1rem;
+        }
+
+        .messagepad__message.side--self {
+            justify-content: flex-end;
+        }
+
+        .messagepad__message {
+            display: flex;
+            margin-bottom: 1.875rem;
+            overflow: visible;
+        }
+
+        .user-profile-avatar {
+            border-radius: 50% !important;
+        }
+
+        .side--self .messagepad__message__body {
+            margin-right: 1.25rem;
+            background: #f0f0f0;
+            color: #222;
+            order: -1;
+        }
+
+        .messagepad__message__body {
+            font-size: .875rem;
+            line-height: 1.5;
+            padding: .9375rem;
+            margin-bottom: .5rem;
+            position: relative;
+            min-width: 7.25rem;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            -ms-word-break: break-all;
+            word-break: break-word;
+            -ms-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .messagepad__message__body:hover {
+            filter: brightness(1.1);
+            cursor: pointer;
+        }
+
+        .messagepad__message__body:active {
+            transform: scale(0.9, 0.9);
+            filter: brightness(0.8);
+            cursor: pointer;
+        }
+
+        .side--self .messagepad__message__body time {
+            text-align: right;
+        }
+
+        .messagepad__message__body time {
+            opacity: .6;
+            font-size: .8125rem;
+        }
+
+        body, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+            margin: 0;
+            padding: 0;
+        }
+
+        fieldset, img {
+            border: 0;
+        }
+
+        .side--other .messagepad__message__body {
+            margin-left: 1.25rem;
+            background: #5f9fd6;
+            color: #fff;
+            order: 1;
+        }
+
+        .header {
+            margin: 1rem;
+            border-radius: 20px;
+            background-color: #E0E0E0;
+            padding: 1.875rem;
+        }
+
+        .backgroundImageEnable {
+            background-image: url("http://112.253.31.18:8213/file/63/%E5%A4%A7%E5%90%88%E5%BD%B1.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        .blur {
+            filter: blur(20px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 1rem;
+        }
+
+        ::-webkit-scrollbar-track {
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+        }
+
+        #loading {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #0090FF;
+        }
+
+        #loadingCentered {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: whitesmoke;
+        }
+
+        .last {
+            text-shadow: white 1px 1px 2px;
+            font-size: 2rem;
+        }
+    </style>
+    <script>
+
+        function copyToClip(content, message) {
+            const aux = document.createElement("input");
+            aux.setAttribute("value", content);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+            if (message == null) {
+                alert(`${content}\n内容已复制(`);
+            } else {
+                alert(message);
+            }
+        }
+
+        $(function () {
+
+            let backgroundImageShow = false;
+            let backgroundImageBlur = false;
+            let lastTipWidth = false;
+
+            function updateBackgroundImage() {
+                if (backgroundImageShow) {
+                    $("#backgroundImage").html("去掉背景图");
+                    $("#backgroundBlur").stop().fadeIn(500);
+                } else {
+                    $("#backgroundImage").html("来个背景图:)");
+                    $("#backgroundBlur").stop().fadeOut(500);
+                }
+                if (backgroundImageBlur) {
+                    $("#backgroundBlur").html("关闭虚化");
+                } else {
+                    $("#backgroundBlur").html("背景图虚化🌁");
+                }
+                if (backgroundImageShow) {
+                    if (backgroundImageBlur) {
+                        $("#backgroundImageDiv").stop().fadeOut(500);
+                        $("#backgroundImageDivBlur").stop().fadeIn(500);
+                    } else {
+                        $("#backgroundImageDiv").stop().fadeIn(500);
+                        $("#backgroundImageDivBlur").stop().fadeOut(500);
+                    }
+                } else {
+                    $("#backgroundImageDiv").stop().fadeOut(500);
+                    $("#backgroundImageDivBlur").stop().fadeOut(500);
+                }
+            }
+
+            $("#backgroundImageDiv").hide();
+            $("#backgroundBlur").hide();
+            $("#backgroundImageDivBlur").hide();
+            $("#theBgPicture").hide();
+            $("#changeAlign").click(function () {
+                $(".messagepad__content").fadeTo(500, 0, function () {
+                    $(".side--other").addClass("sideOtherTagged").removeClass("side--other")
+                    $(".side--self").addClass("side--other").removeClass("side--self")
+                    $(".sideOtherTagged").addClass("side--self").removeClass("sideOtherTagged")
+                    $(".messagepad__content").fadeTo(500, 1)
+                })
+            })
+            $(".messagepad__message__body").click(function () {
+                copyToClip($(this).children().eq(0).text())
+            })
+            $("#backgroundImage").click(function () {
+                backgroundImageShow = !backgroundImageShow;
+                updateBackgroundImage()
+            })
+            $("#backgroundBlur").click(function () {
+                backgroundImageBlur = !backgroundImageBlur;
+                updateBackgroundImage()
+            })
+
+            const s = "聊天记录加载中:) ..."
+
+            $("#loading").fadeIn(500, function () {
+                for (const c in s) {
+                    const $span = $("<span />")
+                    $span.text(s[c]).css({"display": "none"})
+                    $("#loadingCentered").append($span)
+                    setTimeout(function () {
+                        $span.fadeIn(200)
+                    }, c * 50)
+                }
+            })
+
+            $("#theBgPicture").load(function () {
+                $("#loadingCentered").fadeOut(200, function () {
+                    $("#loading").fadeOut(500, function () {
+                        $("#endLoading").fadeIn(200)
+                    })
+                })
+            })
+
+            $(window).resize(function () {
+                if (!lastTipWidth && document.body.clientWidth < 750) {
+                    lastTipWidth = true
+                    alert("窗口宽度小于750像素，显示可能会出问题(")
+                }
+                // if (!lastTipWidth && document.body.clientWidth < 750) {
+                //     lastTipWidth = true
+                //     alert("窗口宽度小于750像素，显示可能会出问题(")
+                // }
+            })
+        })
+    </script>
+</head>
+<body>
+
+<div id="loading" style="display: none">
+    <div id="loadingCentered"></div>
+</div>
+
+<div id="endLoading" style="display: none">
+
+    <div class="header">
+        <div style="display:flex;">
+            <h1>截止到2022年8月26日 时</h1>
+            <span style="position: absolute; right: 2.875rem" class="text-right">
+            <button id="backgroundBlur" class="btn btn-default">背景图虚化🌁</button>
+            <button id="backgroundImage" class="btn btn-default">来个背景图:)</button>
+            <button id="changeAlign" class="btn btn-default">切换气泡方向</button>
+        </span>
+        </div>
+        <span style="color:gray">点击消息以复制内容 | 按 <kbd>Ctrl</kbd> + <kbd>F</kbd> 以查找消息（查找时间也行🙂）</span>
+    </div>
+
+    <div class="content"></div>
+
+    <img src="http://112.253.31.18:8213/file/63/%E5%A4%A7%E5%90%88%E5%BD%B1.png" alt="" id="theBgPicture">
+
+    <div id="backgroundImageDiv" class="content backgroundImageEnable"></div>
+
+    <div id="backgroundImageDivBlur" class="content backgroundImageEnable blur"></div>
+
+    <!-- @formatter:off -->
+    <ol class="messagepad__content">
+
+    </ol>
+    <!-- @formatter:on -->
+
+</div>
+
+</body>
+</html>

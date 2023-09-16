@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            function rec(r, A) {
+                x = r * Math.cos(A * Math.PI / 180);
+                y = r * Math.sin(A * Math.PI / 180);
+                return [x, y];
+            }
+            function roll(d) {
+                return rec(0.5, 180 * d)[0] + 0.5;
+            }
+            function anifunc(f, t, cf = function () { }) {
+                var c = 0;
+                for (var i = 0; i < t; i++) {
+                    setTimeout(function () {
+                        c++;
+                        f(c / t);
+                        if (c == t) {
+                            cf();
+                        }
+                    }, i);
+                }
+            }
+
+            anifunc(function () {
+                $("")
+            }, 500);
+        });
+    </script>
+    <style>
+        body {
+            background-color: cornflowerblue;
+        }
+
+        #div1 {
+            padding: 10%;
+        }
+
+        #div2 {
+            background-color: antiquewhite;
+            border-radius: 20px;
+            padding: 50px;
+            font-size: 200%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1">
+        <div id="div2">hello world</div>
+    </div>
+</body>
+
+</html>

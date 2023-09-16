@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Helen Keller</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            var s = [
+                [6],
+                [11.734113454818726],
+                [16.841179370880127],
+                [23.20427894592285],
+                [29.001450538635254],
+                [31.49618101119995],
+                [34.20988488197327],
+                [39.39305567741394],
+                [42.758952140808105],
+                [45.30958294868469],
+                [48.57840442657471],
+                [50.667593240737915],
+                [56.17827296257019],
+                [58.26076936721802],
+                [61.949455976486206],
+                [67.47428011894226],
+                [73.23433756828308],
+                [95.4881238937378],
+                [98.53990173339844],
+                [101.2924075126648],
+                [106.39686226844788],
+                [109.55182313919067],
+                [112.4508273601532],
+                [115.53088116645813],
+                [117.560964345932],
+                [123.26822090148926],
+                [125.27182340621948],
+                [128.78579139709473],
+                [134.24951481819153],
+                [139.7369384765625],
+                [145.65092754364014],
+                [147.6053717136383],
+                [151.14512658119202],
+                [156.79584169387817],
+                [162.67546939849854]
+            ];
+            for (var i = 0; i < s.length; i++) {
+                $li = $("#soundword").children().eq(i);
+                // $li.children().eq(1).html($li.children().eq(0).html());
+                s[i].unshift($li.children().eq(1).prop("outerHTML"));
+                s[i][1] = (s[i][1] - 3) / 1;
+
+            }
+
+            function getik(i) {
+                return i / 1;
+            }
+
+            function rec(r, A) {
+                x = r * Math.cos(A * Math.PI / 180);
+                y = r * Math.sin(A * Math.PI / 180);
+                return [x, y];
+            }
+
+            function roll(d) {
+                return rec(0.5, 180 * d)[0] + 0.5;
+            }
+
+            function anifunc(f, t, cf = function () {
+            }) {
+                var c = 0;
+                for (var i = 0; i < t; i++) {
+                    setTimeout(function () {
+                        c++;
+                        f(c / t);
+                        if (c == t) {
+                            cf();
+                        }
+                    }, i);
+                }
+            }
+
+            var playing = false;
+            $("#d4").hide();
+            $("#d5").hide();
+            $("body").click(function () {
+                if (!playing) {
+                    playing = true;
+                    $('#sound').trigger('play');
+                    // $('#sound').get(0).playbackRate = 2;
+                    $("#div2").hide();
+
+                    index = 0;
+                    for (var i = 1; i < s.length; i++) {
+                        setTimeout(function () {
+                            index++;
+                            // console.log(index, s[index - 1][1]);
+                            $("#d3").html(s[index][0]);
+                            anifunc(function (a) {
+                                $("#div2").css("filter", `blur(${roll(a) * 5}px)`);
+                                $("#div2").css("opacity", roll(1 - a) * 1);
+                                $("#div2").css("letter-spacing", `${roll(a) * 5}rem`);
+                                $("#div2").css("font-size", `${200 - roll(a) * 100}%`);
+                                $("#d3").css("transform", `rotate(${roll(a) * 45}deg)`);
+                            }, getik(400), function () {
+                                // console.log('e');
+                                setTimeout(function () {
+                                    anifunc(function (a2) {
+                                        $("#div2").css("filter", `blur(${roll(1 - a2) * 5}px)`);
+                                        $("#div2").css("opacity", roll(a2) * 1);
+                                        $("#div2").css("letter-spacing", `${roll(1 - a2) * 5}rem`);
+                                        $("#div2").css("font-size", `${200 + roll(1 - a2) * 100}%`);
+                                        $("#d3").css("transform", `rotate(${0 - roll(1 - a2) * 45}deg)`);
+                                    }, getik(900))
+                                }, (s[index][1] - s[index - 1][1]) * 1000 - getik(1500));
+                            });
+                            $("#div2").show();
+                            if (index == s.length - 1) {
+                                // playing = false;
+                                $("#d4").fadeIn(getik(1000), function () {
+                                    $("#d5").fadeIn(getik(1000));
+                                })
+                            }
+                        }, s[i - 1][1] * 1000)
+                    }
+                }
+            })
+
+        });
+    </script>
+    <style>
+        #div1 {
+            display: table;
+            text-align: center;
+            background-color: darkslategray;
+            left: 0%;
+            top: 0%;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            user-select: none;
+
+        }
+
+        #div2 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 200%;
+            white-space: nowrap;
+
+        }
+
+        #d4 {
+            position: fixed;
+            left: 0%;
+            top: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+        }
+
+        #d5 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 200%;
+            white-space: nowrap;
+
+        }
+
+        /* #d3 {
+            text-shadow: 0 0 5px #FF0000, 0 0 5px #6bf403; 
+        } */
+    </style>
+</head>
+
+<body>
+<div class="tp-content">
+    <div>
+        <ul id="soundword">
+            <li>
+                <div></div>
+                <div></div>
+            </li>
+            <li>
+                <div>秋风落日入长河 江南烟雨行舟</div>
+                <div>秋风落日入长河 江南烟雨行舟</div>
+            </li>
+            <li>
+                <div>乱石穿空 卷起 多少的烽火</div>
+                <div>乱石穿空 <h1>卷起</h1> 多少的烽火</div>
+            </li>
+            <li>
+                <div>万里山河都踏过 天下又入谁手</div>
+                <div>万里山河都踏过 天下又入谁手</div>
+            </li>
+            <li>
+                <div>分分合合 不过几十载春秋</div>
+                <div>分分合合 不过几十载春秋</div>
+            </li>
+            <li>
+                <div>我在 十面埋伏 四面楚歌的时候</div>
+                <div>我在 <b>十</b>面埋伏 <b>四</b>面楚歌的时候</div>
+            </li>
+            <li>
+                <div>把酒与苍天对酌</div>
+                <div>把酒与苍天对酌</div>
+            </li>
+            <li>
+                <div>纵然一去不回 此战又如何</div>
+                <div>纵然一去不回 此战又如何</div>
+            </li>
+            <li>
+                <div>谁见 万箭齐发 星火漫天夜如昼</div>
+                <div>谁见 万箭齐发 星火漫天夜如昼</div>
+            </li>
+            <li>
+                <div>刀光剑影交错</div>
+                <div>刀光剑影交错</div>
+            </li>
+            <li>
+                <div>而我枪出如龙 乾坤撼动</div>
+                <div>而我枪出如龙 乾坤撼动</div>
+            </li>
+            <li>
+                <div>一啸破苍穹</div>
+                <div style="background-image: url(grass.png);
+                    background-size: 100% 100%;
+                    background-position: center center;
+                    line-height: 1000%;">一啸破苍穹
+                </div>
+            </li>
+            <li>
+                <div>长枪刺破云霞 放下一生牵挂</div>
+                <div>长枪刺破云霞 放下一生牵挂</div>
+            </li>
+            <li>
+                <div>望着寒月如牙</div>
+                <div>望着寒月如牙</div>
+            </li>
+            <li>
+                <div>孤身纵马 生死无话</div>
+                <div>孤身纵马 生死无话</div>
+            </li>
+            <li>
+                <div>风卷残骑裂甲 血染万里黄沙</div>
+                <div>风卷残骑裂甲 血染万里黄沙</div>
+            </li>
+            <li>
+                <div>成败笑谈之间 与青史留下</div>
+                <div>成败笑谈之间 与青史留下</div>
+            </li>
+            <li>
+                <div></div>
+                <div><img src="mywzy_and_trm.png"></div>
+            </li>
+            <li>
+                <div>我在 十面埋伏 四面楚歌的时候</div>
+                <div>我在 <b>十</b>面埋伏 <b>四</b>面楚歌的时候</div>
+            </li>
+            <li>
+                <div>把酒与苍天对酌</div>
+                <div>把酒与苍天对酌</div>
+            </li>
+            <li>
+                <div>纵然一去不回 此战又如何</div>
+                <div>纵然一去不回 此战又如何</div>
+            </li>
+            <li>
+                <div>谁见 万箭齐发 星火漫天夜如昼</div>
+                <div>谁见 万箭齐发 星火漫天夜如昼</div>
+            </li>
+            <li>
+                <div>刀光剑影交错</div>
+                <div>刀光剑影交错</div>
+            </li>
+            <li>
+                <div>而我枪出如龙 乾坤撼动</div>
+                <div>而我枪出如龙 乾坤撼动</div>
+            </li>
+            <li>
+                <div>一啸破苍穹</div>
+                <div style="background-image: url(grass.png);
+                    background-size: 100% 100%;
+                    background-position: center center;
+                    line-height: 1000%;">一啸破苍穹
+                </div>
+            </li>
+            <li>
+                <div>长枪刺破云霞 放下一生牵挂</div>
+                <div>长枪刺破云霞 放下一生牵挂</div>
+            </li>
+            <li>
+                <div>望着寒月如牙</div>
+                <div>望着寒月如牙</div>
+            </li>
+            <li>
+                <div>孤身纵马 生死无话</div>
+                <div>孤身纵马 生死无话</div>
+            </li>
+            <li>
+                <div>风卷残骑裂甲 血染万里黄沙</div>
+                <div>风卷残骑裂甲 血染万里黄沙</div>
+            </li>
+            <li>
+                <div>成败笑谈之间 与青史留下</div>
+                <div>成败笑谈之间 与青史留下</div>
+            </li>
+            <li>
+                <div>长枪刺破云霞 放下一生牵挂</div>
+                <div>长枪刺破云霞 放下一生牵挂</div>
+            </li>
+            <li>
+                <div>望着寒月如牙</div>
+                <div>望着寒月如牙</div>
+            </li>
+            <li>
+                <div>孤身纵马 生死无话</div>
+                <div>孤身纵马 生死无话</div>
+            </li>
+            <li>
+                <div>风卷残骑裂甲 血染万里黄沙</div>
+                <div>风卷残骑裂甲 血染万里黄沙</div>
+            </li>
+            <li>
+                <div>笑谈间 谁能留下</div>
+                <div>笑谈间 谁能留下</div>
+            </li>
+        </ul>
+
+    </div>
+    <div id="div1">
+        <div id="div2">
+            <div id="d3">单击屏幕</div>
+        </div>
+    </div>
+    <div id="d4">
+        <div id="d5">笑谈间 谁能留下<br>Made by myworldzycpc.</div>
+    </div>
+</div>
+
+<video class="hide" id="sound" src="破苍穹.mp3" preload="auto"></video>
+
+</body>
+
+</html>

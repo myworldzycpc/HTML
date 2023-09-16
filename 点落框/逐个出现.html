@@ -1,0 +1,301 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            function foreach(a, f) {
+                var f = f ? f : function (i) { return i };
+                var rt = [];
+                for (var i = 0; i < a.length; i++) {
+                    rt.push(f(a.eq(i)));
+                };
+                return rt;
+            };
+            var t = 100;
+            var olist = [];
+            function gall($f) {
+                $all = $f.children();
+                foreach($all, function (i) {
+                    console.log(i.prevObject[0]);
+                    $this = i;
+                    var number = $this.children().length;
+                    if (number == 0) {
+                        olist.unshift($this);
+                        $this.css("opacity", "0");
+                    } else {
+                        olist.unshift($this);
+                        $this.css("opacity", "0");
+                        gall($this);
+                    }
+                })
+
+            }
+            gall($("body"));
+            console.log(olist);
+            function a() {
+                $lo = olist.pop();
+                if ($lo) {
+                    $lo.animate({ "opacity": "1" }, 200);
+                    console.log($lo.text());
+                } else {
+                    clearInterval(loop);
+                }
+            }
+            loop = setInterval(a, 1);
+        });
+    </script>
+    <style>
+        table {
+            margin: 0px auto 100px auto;
+            border-collapse: collapse;
+            border: 2px solid black;
+            box-shadow: 0px 0px 8px black;
+        }
+
+        td,
+        th {
+            border: 2px solid black;
+            padding: 15px 15px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body style="font-size:20px;">
+    <div class="tp-content" style="opacity: 1; position: static; left: 0px; width: 100%;">
+        <h1 style="margin-bottom:100px;">
+            Minecraft生物属性数据
+            <br>
+            作者：TheRedMaker_
+        </h1>
+
+        <table class="t1">
+            <tr class="th">
+                <th>生物</th>
+                <th>命名空间ID</th>
+                <th>血量</th>
+                <th>跟踪范围</th>
+                <th>移动速度</th>
+                <th>击退抗性</th>
+                <th>攻击伤害</th>
+                <th>攻击击退</th>
+            </tr>
+            <tr class="td0">
+                <td>僵尸</td>
+                <td>zombie</td>
+                <td>20</td>
+                <td>35</td>
+                <td>0.23000000417232513</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr class="td1">
+                <td>溺尸</td>
+                <td>drowned</td>
+                <td>20</td>
+                <td>35</td>
+                <td>0.23000000417232513</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr class="td2">
+                <td>尸壳</td>
+                <td>husk</td>
+                <td>20</td>
+                <td>35</td>
+                <td>0.23000000417232513</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr class="td3">
+                <td>僵尸猪灵</td>
+                <td>zombified_piglin</td>
+                <td>20</td>
+                <td>35</td>
+                <td>0.23000000417232513</td>
+                <td>0</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr class="td4">
+                <td>猪灵</td>
+                <td>piglin</td>
+                <td>20</td>
+                <td>16</td>
+                <td>0.3499999940395355</td>
+                <td>0</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr class="td5">
+                <td>猪灵蛮兵</td>
+                <td>piglin_brute</td>
+                <td>50</td>
+                <td>16</td>
+                <td>0.3499999940395355</td>
+                <td>0</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr class="td6">
+                <td>骷髅</td>
+                <td>skeleton</td>
+                <td>20</td>
+                <td>16</td>
+                <td>0.25</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr class="td7">
+                <td>流浪者</td>
+                <td>stray</td>
+                <td>20</td>
+                <td>16</td>
+                <td>0.25</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr class="td8">
+                <td>凋零骷髅</td>
+                <td>wither_skeleton</td>
+                <td>20</td>
+                <td>16</td>
+                <td>0.25</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr class="td9">
+                <td>爬行者</td>
+                <td>creeper</td>
+                <td>20</td>
+                <td>16</td>
+                <td>0.25</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr class="td10">
+                <td>史莱姆(Size:3)</td>
+                <td>slime</td>
+                <td>16</td>
+                <td>16</td>
+                <td>0.6000000238418579</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr class="td11">
+                <td>史莱姆(Size:2)</td>
+                <td>slime</td>
+                <td>4</td>
+                <td>16</td>
+                <td>0.4000000059604645</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr class="td12">
+                <td>史莱姆(Size:1)</td>
+                <td>slime</td>
+                <td>1</td>
+                <td>16</td>
+                <td>0.30000001192092896</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+            <tr class="td13">
+                <td>岩浆史莱姆(Size:3)</td>
+                <td>magma_cube</td>
+                <td>16</td>
+                <td>16</td>
+                <td>0.6000000238418579</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr class="td14">
+                <td>岩浆史莱姆(Size:2)</td>
+                <td>magma_cube</td>
+                <td>4</td>
+                <td>16</td>
+                <td>0.4000000059604645</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr class="td15">
+                <td>岩浆史莱姆(Size:1)</td>
+                <td>magma_cube</td>
+                <td>1</td>
+                <td>16</td>
+                <td>0.30000001192092896</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+            <tr class="td16">
+                <td>恶魂</td>
+                <td>ghast</td>
+                <td>10</td>
+                <td>100</td>
+                <td>0.699999988079071(没用)</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>
+        <table class="t2">
+            <tr class="th">
+                <th>名称</th>
+                <th>属性名</th>
+            </tr>
+            <tr class="td0">
+                <td>血量</td>
+                <td>generic.max_health</td>
+            </tr>
+            <tr class="td1">
+                <td>跟踪范围</td>
+                <td>generic.follow_range</td>
+            </tr>
+            <tr class="td2">
+                <td>移动速度</td>
+                <td>generic.movement_speed</td>
+            </tr>
+            <tr class="td3">
+                <td>击退抗性</td>
+                <td>generic.knockback_resistance</td>
+            </tr>
+            <tr class="td4">
+                <td>攻击伤害</td>
+                <td>generic.attack_damage</td>
+            </tr>
+            <tr class="td5">
+                <td>攻击击退</td>
+                <td>generic.attack_knockback</td>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+
+</html>

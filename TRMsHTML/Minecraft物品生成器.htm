@@ -1,0 +1,176 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Minecraft物品生成器</title>
+        <script src="jquery/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="css/TRMsCSS.css">
+        <script src="js/functions.js"></script>
+        <script>
+            $(
+                function()
+                {
+                    //code here
+                    $("div.main_frame").fadeIn(800);
+                    more_info(
+                        {
+                            "span.mic_target1":"div.more_info.i1",
+                            "span.mic_target2":"div.more_info.i2",
+                            "span.mic_target3":"div.more_info.i3"
+                        }
+                    );
+                    //end
+                }
+            );
+        </script>
+    </head>
+    <body>
+        <div class="main_frame" style="display:none; width:80%; margin:0px auto;">
+            <div class="main_heading" style="padding:50px 100px 70px;">
+                <h1 style="margin:0px;">Minecraft物品生成器</h1>
+                <p style="margin:0px;">
+                    网页设计 -- TheRedMaker_<br/>
+                    游戏数据 -- TheRedMaker_
+                </p>
+            </div>
+
+
+
+
+            <div class="frame">
+                <div class="frame_heading">
+                    <span class="fh mic_target1">物品 -- 点击此处来显示/隐藏怎么获得物品命名空间ID</span>
+                </div>
+                <div class="more_info i1">
+                    <span class="mi">
+                        在游戏里按F3+H打开高级提示</br>然后打开背包把鼠标移动到物品上，物品的命名空间ID就在显示的物品信息框的底下
+                    </span>
+                </div>
+
+                <div class="frame_body">
+                    <div class="fb">
+                        <div class="frame">
+                            <label>物品命名空间ID</label>
+                            <input type="text" placeholder="输入物品命名空间ID，如：minecraft:stone（石头）">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="frame">
+                <div class="frame_heading">
+                    <span class="fh mic_target2">物品成为实体时的名称 -- 点击此处来显示/隐藏详细信息</span>
+                </div>
+                <div class="more_info i2">
+                    <span class="mi">物品成为实体时显示的名称（掉落物），如果被捡起来，再次成为实体时名称不会显示</span>
+                </div>
+
+                <div class="frame_body">
+                    <div class="fb">
+                        <div class="frame">
+                            <label>名称</label>
+                            <input type="text" placeholder="输入物品名称">
+                        </div>
+
+                        <div class="frame">
+                            <label>颜色</label>
+                            <select class="combobox">
+                                <option>白色</option>
+                                <option>黑色</option>
+                                <option>蓝色</option>
+                                <option>深蓝色</option>
+                                <option>绿色</option>
+                                <option>深绿色</option>
+                                <option>青色</option>
+                                <option>深青色</option>
+                                <option>红色</option>
+                                <option>深红色</option>
+                                <option>浅紫色</option>
+                                <option>深紫色</option>
+                                <option>金色</option>
+                                <option>灰色</option>
+                                <option>深灰色</option>
+                                <option>黄色</option>
+                            </select>
+                        </div>
+
+                        <div class="frame">
+                            <span class="checkbtn_label off">斜体</span>
+                            <span class="checkbtn off">关</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="frame">
+                <div class="frame_heading">
+                    <span class="fh mic_target3">物品在背包时的名称 -- 点击此处来显示/隐藏详细信息</span>
+                </div>
+                <div class="more_info i3">
+                    <span class="mi">物品在背包中显示的名称</span>
+                </div>
+
+                <div class="frame_body">
+                    <div class="fb">
+                        <div class="frame">
+                            <label>名称</label>
+                            <input type="text" placeholder="输入物品名称">
+                        </div>
+
+                        <div class="frame">
+                            <label>颜色</label>
+                            <select class="combobox">
+                                <option>白色</option>
+                                <option>黑色</option>
+                                <option>蓝色</option>
+                                <option>深蓝色</option>
+                                <option>绿色</option>
+                                <option>深绿色</option>
+                                <option>青色</option>
+                                <option>深青色</option>
+                                <option>红色</option>
+                                <option>深红色</option>
+                                <option>浅紫色</option>
+                                <option>深紫色</option>
+                                <option>金色</option>
+                                <option>灰色</option>
+                                <option>深灰色</option>
+                                <option>黄色</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="frame">
+                <button class="rbtn summon_command" style="margin-bottom:10px;">生成指令</button>
+                <label>指令 -- 连点3次可以选中全部指令</label>
+                <div style="border-radius:8px; background-position:center center; background-image:url(css/mywzpc_trm.png);">
+                    <div style="padding:30px 30px;">
+                        <div style="border-radius:8px; border:2px solid rgb(210, 210, 210); background-color:rgba(0, 0, 0, 0.5);">
+                            <!--Command-->
+                            <span style="font-family:mc_font; word-break:break-all; padding:15px; display:block;">summon minecraft:item ~ ~ ~ {}</span>
+                            <!--Command-->
+                        </div>
+                    </div>
+                </div>
+                <p style="margin:10px 0px 0px 0px;">潜行的是myworldzycpc，另一个是TheRedMaker_</p>
+            </div>
+
+
+
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>test</title>
+    <script>
+        $(function () {
+            $("#notify").click(function () {
+                let cmd = new ActiveXObject("WScript.Shell");
+                /*
+                命令参数说明
+                cmd.exe /c dir 是执行完dir命令后关闭命令窗口。
+                cmd.exe /k dir 是执行完dir命令后不关闭命令窗口。
+                cmd.exe /c start dir 会打开一个新窗口后执行dir指令，原窗口会关闭。
+                cmd.exe /k start dir 会打开一个新窗口后执行dir指令，原窗口不会关闭。
+                */
+                //执行完cmd命令后不关闭命令窗口。
+                cmd.run("cmd.exe /k " + "echo hello world");
+                cmd = null;
+            });
+        });
+    </script>
+</head>
+<body>
+
+<button id="notify">通知</button>
+
+<pre id="theCode"></pre>
+
+</body>
+</html>

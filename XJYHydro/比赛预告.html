@@ -1,0 +1,161 @@
+<meta charset="utf-8">
+<style>
+
+    @keyframes contestContainerAnimation {
+        0% {
+            position: relative;
+            left: 1000px;
+            opacity: 0;
+        }
+        10% {
+            position: relative;
+            left: 1000px;
+            opacity: 0;
+        }
+        30% {
+            position: relative;
+            left: 0;
+            opacity: 1;
+        }
+    }
+
+    @keyframes contestTitleAnimation {
+        0% {
+            opacity: 0;
+        }
+        15% {
+            opacity: 0;
+        }
+        40% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes contestTimeAnimation {
+        0% {
+            position: relative;
+            right: 1000px;
+            opacity: 0;
+        }
+        20% {
+            position: relative;
+            right: 1000px;
+            opacity: 0;
+        }
+        60% {
+            position: relative;
+            right: 0;
+            opacity: 1;
+        }
+    }
+
+    .contestContainer {
+        text-align: center;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: #808;
+        box-shadow: 5px 5px 0 #303;
+        border: 5px solid #A0A;
+        color: white;
+        animation: contestContainerAnimation 5s;
+    }
+
+    .contestTitle {
+        background-color: orange;
+        display: inline-flex;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 0 10px white;
+        animation: contestTitleAnimation 5s;
+    }
+
+    .contestIcon {
+        padding: 5px;
+        margin-right: 5px;
+    }
+
+    .contestName {
+        background-color: white;
+        border-radius: 5px;
+        padding: 5px;
+        color: black;
+    }
+
+    .contestTime {
+        margin-top: 20px;
+        animation: contestTimeAnimation 5s;
+    }
+
+    .contestName::content {
+        background-color: white;
+    }
+
+    .contestClickToView {
+        margin-top: 10px;
+        background-color: dodgerblue;
+        border-radius: 10px;
+        padding: 5px;
+        border-left: 5px solid #1e90ff;
+        border-top: 5px solid #1e90ff;
+        border-right: 5px solid #0f487F;
+        border-bottom: 5px solid #0f487F;
+        cursor: pointer;
+        transition: 0.2s;
+        animation: contestClickToViewAnimation 5s;
+    }
+
+    .contestClickToView:active {
+        border-left: 5px solid #0f487F;
+        border-top: 5px solid #0f487F;
+        border-right: 5px solid #1e90ff;
+        border-bottom: 5px solid #1e90ff;
+        filter: brightness(0.7);
+
+    }
+
+    @keyframes contestClickToViewAnimation {
+        0% {
+            position: relative;
+            top: 500px;
+            opacity: 0;
+        }
+        60% {
+            position: relative;
+            top: 500px;
+            opacity: 0;
+        }
+        80% {
+            position: relative;
+            top: 0;
+            opacity: 1;
+        }
+    }
+
+</style>
+<!--<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>-->
+<script>
+    $(function () {
+        $("#goContest20221116").click(function () {
+            $(this).css({"transform": "scale(0)", "transition": "ease-in 0.5s"});
+            setTimeout(() => {
+                $("body").css({"transform": "translateX(-100%)", "transition": "ease-in 0.2s"});
+                setTimeout(() => {
+                    window.location.href = "../contest/637395432bb51f0964860ed3"
+                }, 200);
+            }, 500);
+        });
+    });
+</script>
+<div class="contestContainer" style="filter: grayscale(1); opacity: 0.5">
+    <div class="contestTitle">
+        <div class="contestIcon">🏆</div>
+        <div class="contestName">扫黄大队长职业抢夺赛</div>
+    </div>
+    <div class="contestTime">
+        <p>时间：2022-11-19 17:00 (星期六) (已结束)</p>
+        <p>主持人：<a href="https://oj.zqy.ac.cn/user/9">拿起失乐园的屑CENSORED (lizexuan)</a></p>
+    </div>
+    <div class="contestClickToView" id="goContest20221116">
+        点击查看
+    </div>
+</div>

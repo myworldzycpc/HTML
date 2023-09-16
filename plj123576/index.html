@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>袁照雯和张意晨</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("p").prepend("&emsp;&emsp;");
+            $("#content").hide();
+            $("#prog").hide();
+            $("#dvimg").hide();
+            $("#password").hide();
+            $("#prog").fadeIn(200);
+            $("#progbar").animate({"width": "100%"}, 1000, function () {
+                $("#prog").fadeOut(500, function () {
+                    $('#password').fadeIn(200);
+                });
+            });
+            $('#pwsm').click(function () {
+                if ($('#pwinput').val() == 'yzwhzyc123456') {
+                    $('#pwgroup').removeClass('has-error').addClass('has-success');
+                    $('#pwtip').html('密码正确');
+                    $('#password').fadeOut(200, function () {
+                        $("#content").slideDown(1000, function () {
+                            $("#dvimg").fadeIn(200);
+                        });
+                    });
+                } else {
+                    $('#pwgroup').addClass('has-error');
+                    $('#pwtip').html('密码错误');
+                }
+                ;
+            });
+            $("#yajing").click(function () {
+                $("#content").slideUp(1000, function () {
+                    $("#prog").fadeIn(500, function () {
+                        $("#progbar").animate({"width": "0%"}, 1000);
+                        $("#prog").fadeOut(1500);
+                    });
+                });
+            });
+            $("#myCarousel").carousel('cycle');
+            $("#starimage").load("pic1.html");
+            $("#dvimg").load("pic2.html");
+            $("#passpic").load("pic2.html");
+            $("#paperbag").load("pic3.html");
+            $("#autoset").click(function () {
+                $("#content").fadeOut(200, function () {
+                    var devicewidth = document.documentElement.clientWidth;
+                    var scale = devicewidth / 800;  // 分母——设计稿的尺寸
+                    document.body.style.zoom = scale;
+                    $("#content").fadeIn(200);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+​
+<div class="container">
+    <div id="prog">
+        <div class="progress">
+            <div id="progbar" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                <span>加载中...</span>
+            </div>
+        </div>
+        <div class="text-center">
+            版本 5.22.1
+        </div>
+    </div>
+    <div class="well" id="password">
+        <div id="pwgroup" class="form-group">
+            <label class="control-label" for="pwinput">密码</label>
+            <input type="text" class="form-control" id="pwinput" placeholder="请输入密码"/>
+            <label id="pwtip" class="control-label" for="inputError"></label>
+        </div>
+        <button id="pwsm" class="btn btn-default">确定</button>
+    </div>
+    <div id="content">
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                        <h4 class="modal-title" id="myModalLabel"> 你总共说“就离谱”的次数 </h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="text-success" style="font-size:30px">82</span>次
+                        <br/>
+                        <small> 平均每天7次 </small>
+                        <hr/>
+                        你13岁零2个月的时候上七年级，我13岁零2个月的时候上八年级
+                        <hr/>
+                        柳絮是柳树的头皮屑
+                        <hr/>
+                        一切希望皆失望，遍地失望化绝望
+                        <hr/>
+                        会的答，不会的蒙，实在不会就选C。三长一短选最短，三短一长选最长。两长两短选择B，参差不齐就选C。以抄为主，以蒙为辅。抄蒙结合，定能及格。
+                        <hr/>
+                        你溺水过吗？你触电过吗？你烫伤过吗？你骨折过吗？你被高速旋转的东西夹到过吗？这些王宗言都经历过。
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"> 关闭</button>
+                        <button id="yajing" type="button" class="btn btn-primary" data-dismiss="modal"> 压压惊</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 模态框结束 -->
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="jumbotron">
+                    <h1> 袁照雯和张意晨！ </h1> <br><br>
+                    <div>
+                        紧接着日期下面的，是你说“就离谱”的统计 <br/>
+                        <span class="text-warning"> 这个网站只有袁照雯可以看 </span>
+                    </div>
+                    <br><br>
+                    <div>
+                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> 总共说了多少次“就离谱”</button>
+                        <button id="autoset" class="btn btn-default">调整字体</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="well">
+                    当你把安全感建立在别人身上 他们随时都可以把你撂倒。
+                    <hr/>
+                    大概是还不够优秀，还不值得拥有。
+                    <hr/>
+                    遗憾归遗憾，人不能一直停留在原地吧。
+                </div>
+                <div id="myCarousel" class="carousel slide">
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div class="alert alert-info text-center">
+                                当你把安全感建立在别人身上 他们随时都可以把你撂倒。
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="alert alert-info text-center">
+                                大概是还不够优秀，还不值得拥有。
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="alert alert-info text-center">
+                                遗憾归遗憾，人不能一直停留在原地吧。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年5月22日 星期六
+            </div>
+            <div class="panel-body">
+                <a href="https://myworldzycpc.github.io/files/plj123567/tep.html" class="btn btn-success">终末之诗</a>
+                <hr>
+                推荐横屏观看，时长9分钟。
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年5月12日 星期三
+            </div>
+            <div class="panel-body">
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                                <h4 class="modal-title" id="myModalLabel">姓名笔画数（从少到多）</h4>
+                            </div>
+                            <div class="modal-body">
+                                15：周妍。
+                                <br/> 18：王宗言，王子硕，王俊东，王庆林，吴立江。
+                                <br/> 19：宗帅扬。
+                                <br/> 20：王振宇，王浩宇。
+                                <br/> 21：张昊阳，王堃宇。
+                                <br/> 22：张恒齐。
+                                <br/> 24：陈星昊，王禹硕。
+                                <br/> 25：刘心蕊，袁小婷，毛勇智，孟祎奇，王祖翔，王俊超，张旗月。
+                                <br/> 26：郭雅文。
+                                <br/> 27：吴婧茜，王俊豪，杨博凯，张英奇，伦慧伦。
+                                <br/> 28：袁华葳，孙嘉泽。
+                                <br/> 29：李佳璇。
+                                <br/> 30：郑福临。
+                                <br/> 31：
+                                <b>张意晨</b>，夏嘉呈，张馨月。
+                                <br/> 34：戚嘉恒，宋洋金皓。
+                                <br/> 35：
+                                <b>袁照雯</b>。
+                                <br/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"> 关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 模态框结束 -->
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal2">所有同学们姓名笔画数排序</button>
+                <hr>
+                点击上面的按钮看看吧
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年5月10日 星期一
+            </div>
+            <div class="panel-body">
+                你走了，桌子上的小红花还留着
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年5月8日 星期六
+            </div>
+            <div class="panel-body">
+                <p> 上六年级时我和陈子伟同班，他有一次出车祸磕到右手。他在禧源路上骑自行车，那时禧源路两侧施工，挖开了数十米的深沟。当时他在辅路上骑车，主路有挡板而辅路没有挡板，他骑车时一不小心就掉进了深沟。结果他一个多星期没来，他来的时候右手上缠着白色绷带。他来之后紧接着的考试中他用左手答卷得了111分（3科）。考试后不久，我做了个东西，我拿了个A4纸，写了个“新闻稿”，题目是“震惊，陈子伟出车祸磕到右手”，下面写着日期和“mywzy”</p>
+                <p> （这是我六年级时网易MC的昵称，我最开始玩MC时是用多玩，我昵称是“myworldzhangyichen”，然后六年级我注册网易的时候昵称太长，然后我把它压缩成了五个字母“mywzy”，七年级下学期的时候我又把它扩到了12个字母“myworldzycpc”，因为网易MC昵称最多12个字母。到了八年级“mywzy”又有了特殊含义）</p>
+                <p> 然后内容是说陈子伟出车祸磕到右手，然后考试时用左手答卷得了111分的事情。然后我把这张纸塞到一个纸袋里，然后我在纸袋上开了个口，画上一个手机，然后就能划着看了：</p>
+                <div id="paperbag"></div>
+                <p> 当我把这个东西给同学们看的时候，突然张山进来了，然后被张山发现了（当时张山教我们数学），然后这个东西就被张山给全班同学读了一遍，张山说要把这个东西留下，然后张山把这个东西拿走了，放到办公室的一个柜子里保存着。直到现在，这个东西还在张山的手里。</p>
+            </div>
+        </div>
+        <div class="panel panel-danger text-danger">
+            <div class="panel-heading">
+                2021年5月7日 星期五
+            </div>
+            <div class="panel-body">
+                <p>调位了，可惜我们被分开了</p>
+                <p>7个月后，我又回到了中间</p>
+                <p>珍惜曾经我和你在一起的时光</p>
+                <hr/>
+                <div class="text-right">
+                    --MYWorldZYcpc
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年5月7日 星期五
+            </div>
+            <div class="panel-heading">
+                2021年5月6日 星期四
+            </div>
+            <div class="panel-body">
+                <div class="text-center">
+                    说了
+                    <span class="text-success" style="font-size:50px">0</span>次 “就离谱”
+                    <br/> 厉害
+                </div>
+                <hr/>
+                暖风炙烤着植物的气息，扑面地吹来
+            </div>
+        </div>
+        <div class="alert alert-success">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div id="starimage"></div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="text-right">
+                        <h2>五个角，一颗星 -- </h2>
+                        <h1>5*1!</h1>
+                        <h1></h1>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="text-center">
+                努力只能及格，拼命才会优秀
+                <br/> 不是尽力而为，而是全力以赴
+            </div>
+            <hr/>
+            <p> 滴滴复滴滴，大佬当户编。不闻敲键声，惟闻佬叹息。问佬何所思，问佬何所忆。佬亦无所思，佬亦无所忆。昨夜见漏洞，程序大点兵。码书十二卷，卷卷有佬名。大佬无电脑，程序无漏洞。愿为调试员，从此替爷敲。</p>
+            <p> 东市买显卡，西市买内存，南市买声卡，北市买网卡。佬辞机房去，暮宿电脑边。不闻短信唤佬声，但闻电脑报错鸣嘀嘀。佬辞电脑去，暮至电脑城。不闻短信唤佬声，但闻手机报错鸣嘟嘟。</p>
+            <p> 万里赴云服，机房突停电。骂气传电站，红光照机箱。显卡百战烧，鸡蛋十年熟。</p>
+            <p> 归来见煎蛋，煎蛋立机箱。策勋十二蛋，赏赐百千铁。显卡问所欲，大佬不用调试器，愿敲千行码，送虫回收站。</p>
+            <p> 程序闻佬来，显示调试器；终端闻佬来，当屏显蓝屏；后台闻佬来，报错噔噔调试台。开我调试器，用我IDE。卸我控制台，送我安装包。当屏显蓝屏，对卡帖刷屏。出来看代码，代码皆报错：同行十二年，不知程序有巴格。</p>
+            <p> 程序显报错，特性突出显；双码傍序走，安能辨我是真假。</p>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月30日 星期五
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">1</span>次 “就离谱”
+                <br/>
+                <small> 比29日减少1次 </small>
+                <hr/>
+                这个网站天天更，与天地齐寿，日月同“更”
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月29日 星期四
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">2</span>次
+                <br/>
+                <small> 比28日增加2次 </small>
+                <hr/>
+                说阴就阴，说晴就晴
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月28日 星期三
+            </div>
+            <div class="panel-body">
+                <div class="text-center">
+                    说了
+                    <span class="text-success" style="font-size:50px">0</span>次
+                    <br/> 难以置信！
+                </div>
+                <hr/>
+                昨天我们搬箱子，同学们齐心协力，团结一心，克服千牛大力，做功数百万焦，最终将一屋子被雨水打湿的箱子从东半球搬到了西半球（物理练习册53页上面第五题）
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月27日 星期二
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">4</span>次
+                <br/>
+                <small> 比26日减少4次，继续加油 </small>
+                <hr/>
+                想打喷嚏但是打不出来的时候，看看窗外就能打出来了
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月26日 星期一
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">8</span>次
+                <br/>
+                <small> 和25日一样！ </small>
+                <hr/>
+                生物老师：袁照倩你来背一下
+                <br/>
+                <span class="text-warning">你认为袁照倩在不远处打喷嚏</span>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月25日 星期日
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">8</span>次
+                <br/>
+                <small> 比23日增加3次，事情在往不对劲的方向发展 </small>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月23日 星期五
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">5</span>次
+                <br/>
+                <small> 比22日增加2次，这是怎么了 </small>
+                <hr/>
+                看到你那可爱的酒窝，就想摸一下。
+                <br/>好想用一块橡皮泥把它填起来，然后看看酒窝消失的时候会不会掉出来
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月22日 星期四
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">2</span>次
+                <br/>
+                <small> 比21日减少2次，继续加油 </small>
+                <hr/>
+                1 1 1 1 4 9 19 7 8 9 6 3 2 15 9 5 4 5 2 10 7 8 5 3 4 6 12 3 6 8 9 3 5 8 2 8 13 9 4 1 1 3 4 30 26 13 9 2 7 8 4 3 17 8 10 4 5 3 4 5 7 15 4 9 5 4
+                <br/>整整
+                <span class="text-success" style="font-size:30px">66</span>次
+                <span class="text-success" style="font-size:30px">445</span>秒，你的酒窝不会累吗？
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月21日 星期三
+            </div>
+            <div class="panel-body">
+                说了
+                <span class="text-success" style="font-size:30px">2</span>&times;2 =4次
+                <span class="text-warning"> （半天记录，乘2） </span>
+                <br/>
+                <small> 比19日减少14次，继续加油 </small>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月20日 星期二
+            </div>
+            <div class="panel-body">
+                <span class="text-success" style="font-size:30px">???</span>次
+                <br/>
+                <small> 今天期中考试，没有记录 </small>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月19日 星期一
+            </div>
+            <div class="panel-body">
+                <span class="text-success" style="font-size:30px">18</span>次
+                <br/>
+                <small> 比16日减少12次，继续加油 </small>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                2021年4月16日 星期五
+            </div>
+            <div class="panel-body">
+                <span class="text-success" style="font-size:30px">30</span>次
+            </div>
+        </div>
+        <div id="passpic" style="opacity:0"></div>
+        <br/>
+        <br/>
+    </div>
+</div>
+<div id="dvimg" class="text-right" style="width:100%;position:fixed;bottom:10px"></div>
+</body>
+</html>
