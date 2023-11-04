@@ -132,7 +132,6 @@ const footerHtml = `
           </span>
         </h1>
         <div class="footer__category__expander"><ul class="footer__category__list">
-          <li class="footer__category__item"><a href="http://112.253.31.18:8213">鞠宪庆的 XJYOJ</a></li>
           <li class="footer__category__item"><a href="https://myworldzycpc.github.io">myworldzycpc 的网站</a></li>
           <li class="footer__category__item"><a href="tencent://message/?uin=3554503496&Site=&Menu=yes">myworldzycpc 的 QQ</a></li>
           <li class="footer__category__item"><a href="https://zqy.ac.cn">Acos_X 的个人站点</a></li>

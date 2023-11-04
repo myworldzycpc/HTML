@@ -1,0 +1,33 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>震动</title>
+    <script>
+        if ("vibrate" in navigator) {
+            // 请求震动权限
+            navigator.permissions.query({name: "vibrate"}).then(result => {
+                if (result.state === "granted") {
+                    // 执行震动
+                    navigator.vibrate([200, 100, 200]);
+                } else {
+                    console.error("用户拒绝了震动权限");
+                }
+            });
+        } else {
+            console.error("设备不支持震动功能");
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <br>
+    <a class="btn btn-primary btn-lg shock">震动</a>
+</div>
+</body>
+</html>

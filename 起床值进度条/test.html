@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <title>起床值</title>
+    <style>
+        .mainBox {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /*border: 1px solid black;*/
+        }
+
+        .line {
+            width: 300px;
+            height: 10px;
+            border-radius: 10px;
+            border: 1px solid black;
+            overflow: hidden;
+        }
+
+        .progressBar {
+            position: absolute;
+            background-color: dodgerblue;
+            width: 100px;
+            height: 10px;
+            border-radius: 10px 0 0 10px;
+        }
+
+    </style>
+    <script>
+        $(function () {
+            let process = 0;
+            const maxWidth = 300;
+
+            function reduceValue() {
+                process -= 0.01;
+                if (process < 0) {
+                    process = 0;
+                }
+            }
+
+            function increaseValue() {
+                process += (1 - process) * 0.1;
+            }
+
+            function updateValue() {
+                $("#progressBar").css({"width": `${process * maxWidth}px`});
+            }
+
+            $(document).on("keydown", function () {
+                increaseValue();
+            });
+
+            setInterval(function () {
+                reduceValue();
+                updateValue();
+            }, 50);
+        });
+    </script>
+</head>
+<body>
+
+<div class="mainBox">
+    <div class="line">
+        <div class="progressBar" id="progressBar">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
