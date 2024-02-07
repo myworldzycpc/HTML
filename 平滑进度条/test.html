@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <title>平滑进度条</title>
+    <style>
+        .mainBox {
+            /*border: 1px solid black;*/
+        }
+
+        .line {
+            width: 512px;
+            height: 10px;
+            border-radius: 10px;
+            border: 1px solid black;
+            overflow: hidden;
+        }
+
+        .progressBar {
+            position: absolute;
+            background-color: dodgerblue;
+            width: 0;
+            height: 10px;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .slider {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgb(128, 128, 128);
+            border: 1px solid black;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .maxValue {
+            position: absolute;
+            right: 0;
+        }
+
+        .value {
+            width: 40px;
+            height: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .infos {
+            margin-bottom: 5px;
+        }
+
+        .currValue {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .label {
+            position: fixed;
+            bottom: 45px;
+            transform: translate(-50%, 0) translate(20px, 0);
+        }
+
+    </style>
+    <script>
+        window.sliderValue = 0;
+        $(function () {
+
+            const $progressBar = $("#progressBar");
+            const $video = $("#video")[0];
+            const $videoReverse = $("#videoReverse")[0];
+
+            let currX = Number($progressBar.css("width").replaceAll("px", ""));
+            let nowCurr = currX;
+
+            $("#slider").mousedown(function (e) {
+                window.mousePos = [e.pageX, e.pageY];
+                console.log(mousePos);
+                return false;
+            });
+
+            function stopMouse(e) {
+                window.mousePos = undefined;
+                currX = Number($progressBar.css("width").replaceAll("px", ""));
+                console.log(mousePos);
+            }
+
+            function clamp(x, min, max) {
+                if (x > max) {
+                    return max;
+                } else if (x < min) {
+                    return min;
+                }
+                return x;
+            }
+
+            function moveTo(x) {
+                x = clamp(x, 0, 512);
+                nowCurr = x;
+                $progressBar.css({"width": x});
+                window.sliderValue = x / 512;
+            }
+
+            const minPlaybackRate = 0.0625;
+            const maxPlaybackRate = 16;
+            const base = 0.5;
+
+            $(document).mouseup(stopMouse).blur(stopMouse).mousemove(function (e) {
+                if (window.mousePos && !isNaN(e.pageX)) {
+                    moveTo(currX + e.pageX - window.mousePos[0]);
+                }
+            });
+
+
+            setInterval(function () {
+                const videoTime = $video.duration;
+                const sliderTime = sliderValue * videoTime;
+                const videoCurr = $video.currentTime;
+                const timeDiff = sliderTime - videoCurr;
+                const newRate = -16 * base ** Math.abs(timeDiff) + 16;
+                console.log(newRate)
+                if (newRate < minPlaybackRate) {
+                    $video.pause();
+                    $videoReverse.pause();
+                } else {
+                    if (timeDiff > 0) {
+                        $videoReverse.hidden = true;
+                        $video.hidden = false;
+                        $videoReverse.pause();
+                        $video.playbackRate = newRate;
+                        $videoReverse.currentTime = videoTime - $video.currentTime;
+                        $video.play();
+                    } else if (timeDiff < 0) {
+                        $video.hidden = true;
+                        $videoReverse.hidden = false;
+                        $video.pause();
+                        $videoReverse.playbackRate = newRate;
+                        $video.currentTime = videoTime - $videoReverse.currentTime;
+                        $videoReverse.play();
+                    }
+
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<video src="你在和你妈妈打游戏.mp4" id="video"></video>
+<video src="你在和你妈妈打游戏（倒放）.mp4" id="videoReverse" hidden></video>
+
+<div class="mainBox">
+    <div class="line">
+        <div class="progressBar" id="progressBar">
+            <div class="slider" id="slider">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

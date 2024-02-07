@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试同步滚动</title>
+    <style>
+        .scrollable {
+            display: inline-block;
+            width: 300px;
+            height: 200px;
+            overflow: auto;
+            border: 1px solid;
+            word-break: break-all;
+        }
+
+        #myVideo {
+            display: block;
+            height: calc(100vh - 300px);
+        }
+    </style>
+
+</head>
+<body>
+<div id="div1" class="scrollable">
+    <!-- 内容 -->
+    BsC6D46Yazz0LJCifFlfcZsJLFXbfPnpkwb6hng5X8a2qCLPCeDKbxj7qx4D7eRAhw9Mq34a7ibHQ852htdrg9Xxm9L0eewv50N1UTDAGesV2XBOLV764b19kg7vN3AEHiRFAiGDtobhRm6lpUgjRqHJhSQxTyywpekPhzsFxInvwZLtEZQuAnTRZMfdBs1hOKUgXPS2bT87Z2zUYzXzbBlzDZkgJsb9zYgRINqdSL51AtHh2NwE9QqbyDtIz2F3c1VaEhYd06XkeKnxigkDJBzl7w6ITPewWkCAw9F5HFQN
+    BsC6D46Yazz0LJCifFlfcZsJLFXbfPnpkwb6hng5X8a2qCLPCeDKbxj7qx4D7eRAhw9Mq34a7ibHQ852htdrg9Xxm9L0eewv50N1UTDAGesV2XBOLV764b19kg7vN3AEHiRFAiGDtobhRm6lpUgjRqHJhSQxTyywpekPhzsFxInvwZLtEZQuAnTRZMfdBs1hOKUgXPS2bT87Z2zUYzXzbBlzDZkgJsb9zYgRINqdSL51AtHh2NwE9QqbyDtIz2F3c1VaEhYd06XkeKnxigkDJBzl7w6ITPewWkCAw9F5HFQN
+    BsC6D46Yazz0LJCifFlfcZsJLFXbfPnpkwb6hng5X8a2qCLPCeDKbxj7qx4D7eRAhw9Mq34a7ibHQ852htdrg9Xxm9L0eewv50N1UTDAGesV2XBOLV764b19kg7vN3AEHiRFAiGDtobhRm6lpUgjRqHJhSQxTyywpekPhzsFxInvwZLtEZQuAnTRZMfdBs1hOKUgXPS2bT87Z2zUYzXzbBlzDZkgJsb9zYgRINqdSL51AtHh2NwE9QqbyDtIz2F3c1VaEhYd06XkeKnxigkDJBzl7w6ITPewWkCAw9F5HFQN
+    BsC6D46Yazz0LJCifFlfcZsJLFXbfPnpkwb6hng5X8a2qCLPCeDKbxj7qx4D7eRAhw9Mq34a7ibHQ852htdrg9Xxm9L0eewv50N1UTDAGesV2XBOLV764b19kg7vN3AEHiRFAiGDtobhRm6lpUgjRqHJhSQxTyywpekPhzsFxInvwZLtEZQuAnTRZMfdBs1hOKUgXPS2bT87Z2zUYzXzbBlzDZkgJsb9zYgRINqdSL51AtHh2NwE9QqbyDtIz2F3c1VaEhYd06XkeKnxigkDJBzl7w6ITPewWkCAw9F5HFQN
+    BsC6D46Yazz0LJCifFlfcZsJLFXbfPnpkwb6hng5X8a2qCLPCeDKbxj7qx4D7eRAhw9Mq34a7ibHQ852htdrg9Xxm9L0eewv50N1UTDAGesV2XBOLV764b19kg7vN3AEHiRFAiGDtobhRm6lpUgjRqHJhSQxTyywpekPhzsFxInvwZLtEZQuAnTRZMfdBs1hOKUgXPS2bT87Z2zUYzXzbBlzDZkgJsb9zYgRINqdSL51AtHh2NwE9QqbyDtIz2F3c1VaEhYd06XkeKnxigkDJBzl7w6ITPewWkCAw9F5HFQN
+</div>
+
+<div id="div2" class="scrollable">
+    <!-- 内容 -->
+    vzWDwfRXCbjSIHlhQFTi1kvGNDVaKQhGRzWrEc9x11IWi8FYZHfMiZ1Go8rYOmg44nANtj1zwX22YsgO05qVDVkl4jjsOWQOZLKdOg1vQ9KVHEbg2GUFXsOE9JFGA0LBtAjCRTs1dumqDpztwYFZO0ZCPlxNqywLnsA6aIihAXU9NJAgbJTgt2qCFCA3nKR1ZVa3yKe4SRglhht9cQWW57jE0MMdftyP5cK0cykw5pLQEI0Uz8ZY6zt47xXSDO5cKrDlEjyN17bTBCMOngAoKpwE8RAYWG4TFOuTs2amliMg
+    BsC6D46Yazz0LJCifFlfcZsJLFXbfPnpkwb6hng5X8a2qCLPCeDKbxj7qx4D7eRAhw9Mq34a7ibHQ852htdrg9Xxm9L0eewv50N1UTDAGesV2XBOLV764b19kg7vN3AEHiRFAiGDtobhRm6lpUgjRqHJhSQxTyywpekPhzsFxInvwZLtEZQuAnTRZMfdBs1hOKUgXPS2bT87Z2zUYzXzbBlzDZkgJsb9zYgRINqdSL51AtHh2NwE9QqbyDtIz2F3c1VaEhYd06XkeKnxigkDJBzl7w6ITPewWkCAw9F5HFQN
+</div>
+
+<video id="myVideo" controls>
+    <source src="wcs.mp4" type="video/mp4">
+</video>
+
+<script>
+    // 获取要同步滚动的 div 元素
+    const div1 = document.getElementById("div1");
+    const div2 = document.getElementById("div2");
+    const video = document.getElementById("myVideo");
+    // 添加滚动事件监听器
+    div1.addEventListener("scroll", function () {
+        // 当 div1 滚动时，将 div2 的滚动位置设置为相同的值
+        div2.scrollTop = div1.scrollTop;
+        div2.scrollLeft = div1.scrollLeft;
+        // 获取滚动容器的滚动位置
+        const scrollPosition = div1.scrollTop;
+
+        // 获取视频的总时长
+        const videoDuration = video.duration;
+
+        // 计算滚动位置与视频进度的映射
+        // 设置视频的当前时间
+        video.currentTime = (scrollPosition / div1.scrollHeight) * videoDuration;
+    });
+
+</script>
+</body>
+</html>

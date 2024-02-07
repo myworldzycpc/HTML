@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音频波形</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#start").click(function () {
+
+                $(this).remove();
+                // 创建一个AudioContext对象
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// 创建AnalyserNode用于分析音频数据
+                const analyser = audioContext.createAnalyser();
+
+// 创建一个缓冲区（Buffer）来存储音频数据
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+// 创建一个Canvas元素
+                const canvas = document.getElementById("waveformCanvas");
+                const canvasCtx = canvas.getContext("2d");
+
+// 获取音频输入（可以替换为你自己的音频源）
+                const audioElement = new Audio('光.mp3');
+                const source = audioContext.createMediaElementSource(audioElement);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+// 启动播放
+                audioElement.play();
+
+                let curr = 0;
+
+// 绘制波形和进度条
+                function draw() {
+                    analyser.getByteTimeDomainData(dataArray);
+
+                    // 清空Canvas
+                    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // 绘制波形
+                    canvasCtx.lineWidth = 2;
+                    canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+                    canvasCtx.beginPath();
+
+                    const sliceWidth = canvas.width / bufferLength;
+                    let x = 0;
+
+                    for (let i = 0; i < bufferLength; i++) {
+                        const v = (dataArray[i]) / (128.0) - 1;
+                        curr = curr * 0.9999 + Math.abs(v) * 0.0001;
+                        const y = (1 - curr) * canvas.height;
+
+
+                        if (i === 0) {
+                            canvasCtx.moveTo(x, y);
+                        } else {
+                            canvasCtx.lineTo(x, y);
+                        }
+
+                        x += sliceWidth * 2;
+                    }
+
+                    // 绘制波形
+                    canvasCtx.lineTo(canvas.width, canvas.height / 2);
+                    canvasCtx.stroke();
+
+                    // 绘制进度条
+                    const currentTime = audioElement.currentTime;
+                    const duration = audioElement.duration;
+                    const progress = currentTime / duration;
+                    const progressBarWidth = canvas.width * progress;
+
+                    canvasCtx.fillStyle = 'rgb(0, 0, 255)';
+                    canvasCtx.fillRect(0, canvas.height - 5, progressBarWidth, 5);
+
+                    // 递归调用以实时更新波形和进度条
+                    requestAnimationFrame(draw);
+                }
+
+                // 开始绘制
+                draw();
+
+            });
+
+        });
+    </script>
+</head>
+<body>
+<canvas id="waveformCanvas" width="1000" height="500"></canvas>
+<button id="start">start</button>
+</body>
+</html>

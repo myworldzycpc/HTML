@@ -4,11 +4,11 @@ script.type = "text/javascript";
 script.src = "https://code.jquery.com/jquery-1.12.4.min.js";
 document.getElementsByTagName('head')[0].appendChild(script);
 // 深色浅色区别
-if (DARK) {
-    document.getElementsByClassName("main")[0].style = "background-image: url('/file/2/wallpaper1667618255557.png'); background-repeat: no-repeat;background-attachment: fixed;background-position: center;background-size: cover;";
-} else {
-    document.getElementsByClassName("main")[0].style = "background-image: url('/file/2/wallpaper1667618255557.jpg'); background-repeat: no-repeat;background-attachment: fixed;background-position: center;background-size: cover;";
-}
+// if (DARK) {
+//     document.getElementsByClassName("main")[0].style = "background-image: url('/file/2/wallpaper1667618255557.png'); background-repeat: no-repeat;background-attachment: fixed;background-position: center;background-size: cover;";
+// } else {
+//     document.getElementsByClassName("main")[0].style = "background-image: url('/file/2/wallpaper1667618255557.jpg'); background-repeat: no-repeat;background-attachment: fixed;background-position: center;background-size: cover;";
+// }
 // 标题点击定位
 headerList = [];
 for (const i of [1, 2, 3, 4, 5, 6]) {
@@ -20,70 +20,70 @@ for (const e of headerList) {
     }
 }
 // 样式表
-document.getElementsByTagName("head")[0].innerHTML += `<style>
-    .directLink:hover {
-        text-decoration: none
-    }
-
-    .directLink {
-        user-select: none;
-        text-decoration: none;
-        transition: 0.5s;
-        opacity: 0;
-        color: orange
-    }
-
-    .directLinkTitle:hover + .directLink {
-        opacity: 1;
-        transition: 0.5s
-    }
-
-    .backToTop {
-        background-color: ${DARK ? "rgb(50, 51, 52)" : "white"};
-        z-index: 999;
-        position: fixed;
-        height: 70px;
-        width: 70px;
-        right: 20px;
-        bottom: 20px;
-        box-shadow: ${DARK ? "0 0.375rem 1.375rem rgba(0, 0, 0, 0.5)" : "0 0.375rem 1.375rem rgba(175, 194, 201, 0.5)"};
-        transition: 0.2s;
-        cursor: pointer;
-        user-select: none;
-        border-radius: 10px
-    }
-
-    .backToTop:active {
-        filter: brightness(${DARK ? "1.7" : "0.7"})
-    }
-
-    .section, img {
-        border-radius: 10px
-    }
-
-    .button {
-        border-radius: 5px
-    }
-
-    ${DARK ? "img {filter: brightness(0.75)}" : ""}
-    
-    .wanghaoliang {
-        color: orange;
-        transition: 0.5s;
-        cursor: pointer;
-    }
-
-    .wanghaoliang:hover {
-        text-decoration: underline
-    }
-
-    mark {
-        background-color: rgba(0, 128, 255, 0.5);
-        border-bottom: none;
-        border-radius: 5px;
-        padding: 2px 5px;
-    }
-</style>`;
+// document.getElementsByTagName("head")[0].innerHTML += `<style>
+//     .directLink:hover {
+//         text-decoration: none
+//     }
+//
+//     .directLink {
+//         user-select: none;
+//         text-decoration: none;
+//         transition: 0.5s;
+//         opacity: 0;
+//         color: orange
+//     }
+//
+//     .directLinkTitle:hover + .directLink {
+//         opacity: 1;
+//         transition: 0.5s
+//     }
+//
+//     .backToTop {
+//         background-color: ${DARK ? "rgb(50, 51, 52)" : "white"};
+//         z-index: 999;
+//         position: fixed;
+//         height: 70px;
+//         width: 70px;
+//         right: 20px;
+//         bottom: 20px;
+//         box-shadow: ${DARK ? "0 0.375rem 1.375rem rgba(0, 0, 0, 0.5)" : "0 0.375rem 1.375rem rgba(175, 194, 201, 0.5)"};
+//         transition: 0.2s;
+//         cursor: pointer;
+//         user-select: none;
+//         border-radius: 10px
+//     }
+//
+//     .backToTop:active {
+//         filter: brightness(${DARK ? "1.7" : "0.7"})
+//     }
+//
+//     .section, img {
+//         border-radius: 10px
+//     }
+//
+//     .button {
+//         border-radius: 5px
+//     }
+//
+//     ${DARK ? "img {filter: brightness(0.75)}" : ""}
+//
+//     .wanghaoliang {
+//         color: orange;
+//         transition: 0.5s;
+//         cursor: pointer;
+//     }
+//
+//     .wanghaoliang:hover {
+//         text-decoration: underline
+//     }
+//
+//     mark {
+//         background-color: rgba(0, 128, 255, 0.5);
+//         border-bottom: none;
+//         border-radius: 5px;
+//         padding: 2px 5px;
+//     }
+// </style>`;
 // 回到顶部
 document.getElementsByTagName("body")[0].innerHTML += `<div class="backToTop" onclick="window.scrollTo({'top': 0})"><div style="position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)">回到<br>顶部</div></div>`;
 // 页尾信息以及友情链接
@@ -178,7 +178,7 @@ script.onload = function () {
     };
     for (const uid in EXTRA_BADGES) {
         for (const badge of EXTRA_BADGES[uid]) {
-            $(`a[href="/user/${uid}"]`).parent().append(`<span class="user-profile-badge v-center" style="background-color:${badge.background};color:${badge.foreground}">${badge.content}</span>`);
+            $(`a.user-profile-name[href="/user/${uid}"]`).parent().append(`<span class="user-profile-badge v-center" style="background-color:${badge.background};color:${badge.foreground}">${badge.content}</span>`);
         }
     }
 

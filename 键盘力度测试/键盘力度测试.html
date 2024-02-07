@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键盘力度检测</title>
+    <style>
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<label for="inputBox">在输入框中敲击键盘：</label>
+<input type="text" id="inputBox">
+
+<div id="output"></div>
+
+<script>
+    const inputBox = document.getElementById('inputBox');
+    const outputDiv = document.getElementById('output');
+    loudness = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    inputBox.addEventListener('keydown', function (event) {
+
+        // 在outputDiv中显示力度信息
+        setTimeout(function () {
+            outputDiv.textContent = `键盘力度：${Math.max(...loudness)}`;
+        }, 200);
+    });
+
+    navigator.mediaDevices.getUserMedia({audio: true})
+        .then(function (stream) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            const microphone = audioContext.createMediaStreamSource(stream);
+
+            microphone.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            analyser.fftSize = 256;
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function updateVolume() {
+                analyser.getByteFrequencyData(dataArray);
+
+                // 计算平均音量
+                const average = dataArray.reduce((acc, val) => acc + val, 0) / bufferLength;
+
+                // 显示音量
+                window.loudness.push(Math.round(average));
+                window.loudness.shift();
+
+                // 每隔一段时间更新一次
+                requestAnimationFrame(updateVolume);
+            }
+
+            // 开始更新音量
+            updateVolume();
+        })
+        .catch(function (err) {
+            console.error('获取麦克风失败：', err);
+        });
+</script>
+</body>
+</html>

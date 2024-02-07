@@ -1,0 +1,123 @@
+* {
+	padding:0;
+	border: 0;
+	margin: 0;
+	
+} /* 清除浏览器默认样式*/
+
+body {
+	background: url(../img/background.jpg) fixed;
+	background-size: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+.head {
+	width:80%;
+	height:50px;
+	padding: 10px 20px;
+	margin: 30px auto;
+	border-radius: 30px;
+	background: white;
+}
+
+div{
+	width:80%;
+	padding: 20px 20px;
+	margin: 30px auto;
+	border-radius: 30px;
+	background: white;
+}
+.banner{
+	padding:0 0;
+	background:none;
+	border-radius: 0;
+}
+.banner img{
+	border-radius: 30px;
+}
+
+.nav {
+	height:20px;
+}
+
+.nav ul li{
+	width: 50px;
+	height: 20px;
+	padding-left: 20px;
+	float: left;
+	text-align: center;
+	list-style: none;
+}
+
+.nav ul li a{
+	text-decoration: none;
+	width:50px;
+	height:20px;
+	display: block;
+}
+
+.footer{
+	text-align: center;
+}
+
+.logo{
+	float: left;
+	padding: 0;
+}
+
+.head button{
+	color: white;
+	background-color: #66CCFF;
+	border-radius: 30px;
+	float: right;
+	width: 100px;
+	height: 50px;
+}
+button a{
+	color: white;
+}
+
+.sub *{
+	color:black;
+}
+
+.sub{
+	width: 50%;
+	float: left;
+}
+
+.character{
+	height: 400px;
+}
+
+.sub p{
+	clear: left;
+}
+
+.Fuintro *{
+	padding: 20px;
+}
+.Fuintro img{
+	float: left;
+}
+.Naintro *{
+	padding: 20px;
+}
+.Naintro img{
+	float: left;
+}
+.Fuintro ul li{
+	padding:0px;
+}
+.Naintro ul li{
+	padding:0px;
+}
+
+.v{
+	width: 100%;
+	padding-left: 0;
+	margin: auto;
+}

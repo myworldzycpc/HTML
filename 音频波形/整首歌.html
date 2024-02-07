@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音频波形</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#start").click(function () {
+
+                $(this).remove();
+                // 创建一个AudioContext对象
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// 创建一个XMLHttpRequest对象来加载音频文件
+                const request = new XMLHttpRequest();
+                request.open('GET', '光.mp3', true);
+                request.responseType = 'arraybuffer';
+
+// 处理加载完成事件
+                // 处理加载完成事件
+                request.onload = function() {
+                    // 解码音频数据
+                    audioContext.decodeAudioData(request.response, function(buffer) {
+                        // 创建OfflineAudioContext，设置样本数为整首歌曲的总样本数
+                        const offlineContext = new OfflineAudioContext(1, buffer.length, audioContext.sampleRate);
+
+                        // 创建AnalyserNode用于分析音频数据
+                        const analyser = offlineContext.createAnalyser();
+
+                        // 连接AnalyserNode到OfflineAudioContext
+                        const source = offlineContext.createBufferSource();
+                        source.buffer = buffer;
+                        source.connect(analyser);
+                        analyser.connect(offlineContext.destination);
+
+                        // 开始渲染整首歌曲
+                        offlineContext.startRendering().then(renderedBuffer => {
+                            if (renderedBuffer) {
+                                // 获取波形数据
+                                const dataArray = new Uint8Array(renderedBuffer.length);
+                                analyser.getByteTimeDomainData(dataArray);
+
+                                // 绘制整首歌曲的波形
+                                drawFullWaveform(dataArray);
+                            } else {
+                                console.error("Failed to render audio data.");
+                            }
+                        });
+                    }, function(error) {
+                        console.error("Error decoding audio data:", error);
+                    });
+                };
+
+
+
+// 发送请求以加载音频文件
+                request.send();
+
+// 绘制整首歌曲的波形
+                function drawFullWaveform(dataArray) {
+                    console.log(dataArray)
+                    // 获取Canvas元素
+                    const canvas = document.getElementById("fullWaveformCanvas");
+                    const canvasCtx = canvas.getContext("2d");
+
+                    // 设置Canvas的宽度和高度
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+
+                    // 绘制波形
+                    canvasCtx.lineWidth = 2;
+                    canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+                    canvasCtx.beginPath();
+
+                    const sliceWidth = canvas.width / dataArray.length;
+                    let x = 0;
+
+                    for (let i = 0; i < dataArray.length; i++) {
+                        const v = dataArray[i] / 128.0;
+                        const y = v * canvas.height / 2;
+
+                        if (i === 0) {
+                            canvasCtx.moveTo(x, y);
+                        } else {
+                            canvasCtx.lineTo(x, y);
+                        }
+
+                        x += sliceWidth;
+                    }
+
+                    // 绘制波形
+                    canvasCtx.lineTo(canvas.width, canvas.height / 2);
+                    canvasCtx.stroke();
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <br>
+    <canvas id="fullWaveformCanvas"></canvas>
+    <button id="start">start</button>
+</div>
+</body>
+</html>
